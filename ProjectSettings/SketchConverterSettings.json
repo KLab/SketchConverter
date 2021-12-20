@@ -1,0 +1,20 @@
+﻿{
+    "fontRelations": [
+        {
+            "SketchFont": "NotoSansJP-Regular",
+            "UnityFont": {
+                "fileID": 12800000,
+                "guid": "0d4e67f2af07a4069abf96a1b833b29e",
+                "type": 3
+            },
+            "SketchTextLineRate": 1.4500000476837159
+        }
+    ],
+    "textureDirectories": [
+        {
+            "fileID": 102900000,
+            "guid": "1acfe078b748f4ba7a3c97d4e2710dd9",
+            "type": 3
+        }
+    ]
+}

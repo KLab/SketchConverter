@@ -1,0 +1,14 @@
+{
+    "name": "SketchConverter.Examples",
+    "references": [
+        "SketchConverter"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": []
+}
