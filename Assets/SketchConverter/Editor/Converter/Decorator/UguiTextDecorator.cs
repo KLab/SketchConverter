@@ -37,13 +37,14 @@ namespace SketchConverter
         /// <inheritdoc/>
         public override void Decorate(IDecoratorEntry entry)
         {
-            var attributes = entry.Adapter.LayerStyle.TextStyle.EncodedAttributes;
-            var color = attributes.MsAttributedStringColorAttribute;
-
             var text = entry.GameObject.AddComponent<Text>();
             text.text = entry.Adapter.LayerAttributedStringString;
+
+            var textStyle = entry.Adapter.LayerStyleTextStyle;
+            var attributes = textStyle.EncodedAttributes;
+            var color = attributes.MsAttributedStringColorAttribute;
             text.fontSize = (int) Math.Round(attributes.MsAttributedStringFontAttribute.Attributes.Size);
-            text.alignment = ToTextAnchor(attributes.ParagraphStyle.AlignmentEnum, entry.Adapter.LayerStyle.TextStyle.VerticalAlignmentEnum);
+            text.alignment = ToTextAnchor(attributes.ParagraphStyle.AlignmentEnum, textStyle.VerticalAlignmentEnum);
             text.color = color.ToUnityColor();
             text.horizontalOverflow = HorizontalWrapMode.Wrap;
             text.verticalOverflow = VerticalWrapMode.Overflow;

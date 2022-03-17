@@ -91,24 +91,25 @@ namespace SketchConverter
             ILayerAdapter Create(ILayer targetLayer, ParsedOverrideValue[] parsedOverrideValues)
             {
                 // ILayer to entity
-                var symbolLayer = default(ILayer);
-                if (targetLayer.IsClass(ClassText.SymbolInstance) &&
-                    targetLayer is OriginalMasterLayer originalMasterLayer &&
-                    !string.IsNullOrEmpty(originalMasterLayer.SymbolId))
+                if (targetLayer.IsClass(ClassText.SymbolInstance) && targetLayer is OriginalMasterLayer originalMasterLayer)
                 {
-                    symbolLayer = GetSymbol(originalMasterLayer.SymbolId);
-                    if (symbolLayer != null)
-                    {
-                        parsedOverrideValues = originalMasterLayer.GetParsedOverrideValues().Concat(parsedOverrideValues).ToArray();
-                    }
+                    parsedOverrideValues = originalMasterLayer.GetParsedOverrideValues().Concat(parsedOverrideValues).ToArray();
                 }
-                var entity = new LayerAdapter(this, targetLayer, symbolLayer, parsedOverrideValues);
+                var entity = new LayerAdapter(this, targetLayer, parsedOverrideValues, GetSymbol);
+                var overrideSymbolToEmpty = !string.IsNullOrEmpty(entity.Layer.SymbolId) && string.IsNullOrEmpty(entity.LayerSymbolId);
+                if (overrideSymbolToEmpty)
+                {
+                    return null;
+                }
 
                 // create entity.Layers
                 foreach (var layer in entity.Layers ?? Enumerable.Empty<OriginalMasterLayer>())
                 {
                     var childEntity = Create(layer, parsedOverrideValues);
-                    entity.LayerAdapters.Add(childEntity);
+                    if (childEntity != null)
+                    {
+                        entity.LayerAdapters.Add(childEntity);
+                    }
                 }
                 return entity;
             }

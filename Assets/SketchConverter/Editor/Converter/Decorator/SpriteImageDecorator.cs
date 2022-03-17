@@ -63,11 +63,7 @@ namespace SketchConverter
             if (sprite != null)
             {
                 image.sprite = sprite;
-            }
-            var importer = TextureImporter.GetAtPath(path) as TextureImporter;
-            if (importer != null)
-            {
-                image.type = importer.spriteBorder == Vector4.zero ? Image.Type.Simple : Image.Type.Sliced;
+                image.type = sprite.border == Vector4.zero ? Image.Type.Simple : Image.Type.Sliced;
             }
 
             var color = LayerToFillColor(entry.Adapter);

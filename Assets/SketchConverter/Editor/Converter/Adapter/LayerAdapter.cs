@@ -15,6 +15,7 @@
  * with other software products is expressly forbidden.
  */
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using SketchConverter.FileFormat;
@@ -47,6 +48,9 @@ namespace SketchConverter
         /// <summary>オーバーライド情報を解決した Layer.Style</summary>
         Style LayerStyle { get; }
 
+        /// <summary>オーバーライド情報を解決した Layer.Style.TextStyle</summary>
+        TextStyle LayerStyleTextStyle { get; }
+
         /// <summary>オーバーライド情報を解決した Layer.Style の Fill Color で有効な色の配列</summary>
         Color[] AvailableFillColors { get; }
     }
@@ -74,7 +78,14 @@ namespace SketchConverter
                                                      (Layer as OriginalMasterLayer)?.AttributedString.String ?? "";
 
         /// <inheritdoc/>
-        public string LayerSymbolId => GetOverrideValue(ParsedOverrideValue.PropertyKeywordSymbol)?.Value.String ?? Layer.SymbolId;
+        public string LayerSymbolId
+        {
+            get
+            {
+                var overrideValue = GetOverrideValue(ParsedOverrideValue.PropertyKeywordSymbol);
+                return overrideValue != null ? overrideValue.Value.String : Layer.SymbolId;
+            }
+        }
 
         /// <inheritdoc/>
         public Color[] AvailableFillColors
@@ -105,8 +116,26 @@ namespace SketchConverter
                     return Layer.Style;
                 }
                 var id = overrideValue.Value.String;
-                var style = Adapter.Document.ForeignLayerStyles.FirstOrDefault(x => x.LocalSharedStyle.DoObjectId == id);
-                return style?.LocalSharedStyle.Value;
+                var style = Adapter.Document.ForeignLayerStyles.Select(x => x.LocalSharedStyle).FirstOrDefault(x => x.DoObjectId == id) ??
+                            Adapter.Document.LayerStyles.Objects.FirstOrDefault(x => x.DoObjectId == id);
+                return style?.Value;
+            }
+        }
+
+        /// <inheritdoc/>
+        public TextStyle LayerStyleTextStyle
+        {
+            get
+            {
+                var overrideValue = GetOverrideValue(ParsedOverrideValue.PropertyKeywordTextStyle);
+                if (overrideValue == null)
+                {
+                    return LayerStyle?.TextStyle;
+                }
+                var id = overrideValue.Value.String;
+                var style = Adapter.Document.ForeignTextStyles.Select(x => x.LocalSharedStyle).FirstOrDefault(x => x.DoObjectId == id) ??
+                            Adapter.Document.LayerTextStyles.Objects.FirstOrDefault(x => x.DoObjectId == id);
+                return style?.Value.TextStyle;
             }
         }
 
@@ -119,6 +148,7 @@ namespace SketchConverter
         /// <summary>
         /// コンストラクタ
         /// </summary>
+        [Obsolete("To be deleted.")]
         public LayerAdapter(Adapter adapter, ILayer layer, ILayer symbolLayer, ParsedOverrideValue[] overrideValues)
         {
             Adapter = adapter;
@@ -132,6 +162,23 @@ namespace SketchConverter
                     .Reverse()
                     .ToArray();
             }
+        }
+
+        /// <summary>
+        /// コンストラクタ
+        /// </summary>
+        public LayerAdapter(Adapter adapter, ILayer layer, ParsedOverrideValue[] overrideValues, Func<string, ILayer> getSymbol)
+        {
+            Adapter = adapter;
+            Layer = layer;
+            OverrideValues = overrideValues;
+            var overrideSymbolValue = OverrideValues.Reverse().FirstOrDefault(x =>
+                x.OverrideObjectId == layer.DoObjectId && x.OverrideProperty == ParsedOverrideValue.PropertyKeywordSymbol);
+            SymbolLayer = getSymbol(overrideSymbolValue != null ? overrideSymbolValue.Value.String : Layer.SymbolId);
+            AvailableOverrideValues = OverrideValues
+                .Where(x => x.OverrideObjectId == layer.DoObjectId || x.OverrideObjectId == SymbolLayer?.DoObjectId)
+                .Reverse()
+                .ToArray();
         }
 
         /// <summary>

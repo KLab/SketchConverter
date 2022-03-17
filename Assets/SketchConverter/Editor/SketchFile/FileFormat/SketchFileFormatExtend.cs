@@ -85,6 +85,7 @@ namespace SketchConverter.FileFormat
         public static string PropertyKeywordSymbol = "symbolID";
         public static string PropertyKeywordImage = "image";
         public static string PropertyKeywordLayerStyle = "layerStyle";
+        public static string PropertyKeywordTextStyle = "textStyle";
         public static string PropertyKeywordFillColor = "fillColor";
 
         readonly OverrideValue overrideValue;

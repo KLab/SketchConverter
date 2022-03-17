@@ -18,7 +18,7 @@
 using UnityEngine;
 using static UnityEngine.Mathf;
 
-namespace SketchConverter.Examples
+namespace SketchConverter
 {
     /// <summary>
     /// 中途半端な値となるアンカー設定の場合大きさ固定中央基準として出力する RectTransformDecorator

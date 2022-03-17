@@ -30,7 +30,7 @@ namespace SketchConverter.Examples
         {
             base.Decorate(entry);
 
-            var styleAttributes = entry.Adapter.LayerStyle.TextStyle.EncodedAttributes;
+            var styleAttributes = entry.Adapter.LayerStyleTextStyle.EncodedAttributes;
             var baseColor = styleAttributes.MsAttributedStringColorAttribute;
             var attributedStringAttributes = (entry.Adapter.Layer as OriginalMasterLayer).AttributedString.Attributes;
 

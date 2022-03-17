@@ -39,6 +39,7 @@ public class ValidatePrefabTestCase
                 "rectangle",
                 "sprites",
                 "colors",
+                "symbols",
             },
             SetupDecorators = Converter.DefaultSetupDecorator,
         },
