@@ -1,7 +1,7 @@
 {
     "name": "SketchConverter",
+    "rootNamespace": "",
     "references": [],
-    "optionalUnityReferences": [],
     "includePlatforms": [
         "Editor"
     ],
@@ -13,5 +13,7 @@
         "SketchConverter.ICSharpCode.SharpZipLib.dll"
     ],
     "autoReferenced": true,
-    "defineConstraints": []
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }

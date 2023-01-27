@@ -146,6 +146,31 @@ namespace SketchConverter.FileFormat
     }
 
     /// <summary>
+    /// Sketch の Fill 情報
+    /// </summary>
+    public partial class Fill
+    {
+        public FillType FillTypeEnum => (FillType) FillType;
+        public PatternFillType PatternFillTypeEnum => (PatternFillType) PatternFillType;
+    }
+
+    /// <summary>
+    /// Sketch の Border 情報
+    /// </summary>
+    public partial class Border
+    {
+        public FillType FillTypeEnum => (FillType) FillType;
+    }
+
+    /// <summary>
+    /// Sketch の Gradient 情報
+    /// </summary>
+    public partial class Gradient
+    {
+        public GradientType GradientTypeEnum => (GradientType) GradientType;
+    }
+
+    /// <summary>
     /// Sketch のスキーマ情報から生成されたクラスに対する拡張メソッド群
     /// </summary>
     public static class Extensions

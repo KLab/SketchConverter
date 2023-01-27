@@ -31,7 +31,7 @@ namespace SketchConverter.FileFormat
     /*
      * このクラスに定義されている文字列一覧を得る方法について。
      * 下記のコマンドを sketch-file-format リポジトリで実行すると型一覧が得られる。
-     * git grep '_class: { const:' -- 'schema' | awk '{sub(".*:", "");sub("^ ","");sub(" }$","");print $0;}' | sort --ignore-case | uniq
+     * git grep '_class: { const:' -- 'packages/file-format/schema' | awk '{sub(".*:", "");sub("^ ","");sub(" }$","");print $0;}' | sort --ignore-case | uniq
      */
     public static class ClassText
     {
@@ -69,6 +69,7 @@ namespace SketchConverter.FileFormat
         public static string MSImmutableHotspotLayer = "MSImmutableHotspotLayer";
         public static string MSImmutableInferredGroupLayout = "MSImmutableInferredGroupLayout";
         public static string MSImmutableOverrideProperty = "MSImmutableOverrideProperty";
+        public static string MSImmutablePatchInfo = "MSImmutablePatchInfo";
         public static string MSJSONFileReference = "MSJSONFileReference";
         public static string MSJSONOriginalDataReference = "MSJSONOriginalDataReference";
         public static string Oval = "oval";
@@ -120,6 +121,37 @@ namespace SketchConverter.FileFormat
         Top,
         Middle,
         Bottom,
+    }
+
+    /// <summary>
+    /// Sketch の FillType 設定
+    /// </summary>
+    public enum FillType
+    {
+        Color = 0,
+        Gradient = 1,
+        Pattern = 4,
+    }
+
+    /// <summary>
+    /// Sketch の PatternFillType 設定
+    /// </summary>
+    public enum PatternFillType
+    {
+        Tile,
+        Fill,
+        Stretch,
+        Fit,
+    }
+
+    /// <summary>
+    /// Sketch の GradientType
+    /// </summary>
+    public enum GradientType
+    {
+        Linear,
+        Radial,
+        Angular,
     }
 
     /// <summary>

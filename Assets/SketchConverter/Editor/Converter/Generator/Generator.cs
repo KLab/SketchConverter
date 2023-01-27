@@ -73,12 +73,22 @@ namespace SketchConverter
         /// </summary>
         protected virtual IEnumerable<IDecoratorEntry> GenerateDescendants(ILayerAdapter adapter, GameObject parent = null)
         {
+            if (!ShouldGenerateEntry(adapter))
+            {
+                yield break;
+            }
+
             var gameObject = GenerateGameObject(parent, adapter);
             var currentEntry = new DecoratorEntry(gameObject, adapter);
             yield return currentEntry;
+            if (!ShouldGenerateDescendants(currentEntry))
+            {
+                yield break;
+            }
+
             if (!ShouldBreakingDescendants(currentEntry))
             {
-                foreach (var childLayerAdapter in adapter.LayerAdapters)
+                foreach (var childLayerAdapter in GetChildAdaptersShouldGenerated(adapter))
                 {
                     foreach (var entry in GenerateDescendants(childLayerAdapter, gameObject))
                     {
@@ -87,6 +97,21 @@ namespace SketchConverter
                 }
             }
         }
+
+        /// <summary>
+        /// 子の Adapter のうち生成すべきものを返す
+        /// </summary>
+        protected virtual IEnumerable<ILayerAdapter> GetChildAdaptersShouldGenerated(ILayerAdapter adapter) => adapter.LayerAdapters;
+
+        /// <summary>
+        /// 引数の Sketch 情報を見て GameObject を生成すべきかどうかを返す
+        /// </summary>
+        protected virtual bool ShouldGenerateEntry(ILayerAdapter adapter) => true;
+
+        /// <summary>
+        /// 引数の entry の子を生成すべきかどうかを返す
+        /// </summary>
+        protected virtual bool ShouldGenerateDescendants(DecoratorEntry entry) => true;
 
         /// <summary>
         /// レイヤー情報を元に GameObject に対して修飾する

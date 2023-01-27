@@ -21,6 +21,7 @@ using System.IO;
 using System.Linq;
 using SketchConverter.FileFormat;
 using UnityEditor;
+using UnityEditor.Callbacks;
 using UnityEditor.IMGUI.Controls;
 using UnityEngine;
 
@@ -68,6 +69,8 @@ namespace SketchConverter
         protected readonly List<Exception> exceptions = new List<Exception>();
         protected Vector2 mainViewScrollPosition = Vector2.zero;
         protected Vector2 exceptionViewScrollPosition = Vector2.zero;
+
+        static readonly string SketchFilePathKey = "SketchFilePathKey";
 
         public virtual void SetupWindow()
         {
@@ -235,6 +238,7 @@ namespace SketchConverter
             }
             LoadSketchFile(path);
             currentOpenSketchFilePath = path;
+            SessionState.SetString(SketchFilePathKey, path);
             // 今回開いたファイルを記憶
             EditorUserSettings.PreviousOpenedSketchFile = path;
 
@@ -330,6 +334,21 @@ namespace SketchConverter
             {
                 shownExceptions = false;
                 exceptions.Clear();
+            }
+        }
+
+        [DidReloadScripts]
+        static void CompileReopenSketchFile()
+        {
+            var windowList = Resources.FindObjectsOfTypeAll<SketchConverterEditorWindow>();
+
+            if (windowList.Any())
+            {
+                var path = SessionState.GetString(SketchFilePathKey, "");
+                if (!string.IsNullOrEmpty(path))
+                {
+                    windowList.First().OpenSketchFile(path);
+                }
             }
         }
     }

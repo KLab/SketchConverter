@@ -1,11 +1,11 @@
 {
     "name": "SketchConverter.Test",
+    "rootNamespace": "",
     "references": [
         "SketchConverter",
-        "SketchConverter.Examples"
-    ],
-    "optionalUnityReferences": [
-        "TestAssemblies"
+        "SketchConverter.Examples",
+        "UnityEngine.TestRunner",
+        "UnityEditor.TestRunner"
     ],
     "includePlatforms": [
         "Editor"
@@ -15,5 +15,9 @@
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": false,
-    "defineConstraints": []
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
 }

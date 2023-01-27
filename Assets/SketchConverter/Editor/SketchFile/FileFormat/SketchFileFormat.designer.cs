@@ -36,7 +36,7 @@ namespace SketchConverter.FileFormat
     /// This schema describes a representation of an expanded Sketch file, that is, a Sketch file
     /// that has been unzipped, all of its entries parsed to JSON and merged into a single
     /// object. A concrete example of an expanded sketch file is the return value of the
-    /// `fromFile` function
+    /// `fromFile` function in `@sketch-hq/sketch-file`
     /// </summary>
     public partial class SketchFileFormatDesigner
     {
@@ -102,6 +102,9 @@ namespace SketchConverter.FileFormat
 
         [JsonProperty("pages")]
         public FileReference[] Pages { get; set; }
+
+        [JsonProperty("patchInfo", NullValueHandling = NullValueHandling.Ignore)]
+        public PatchInfo PatchInfo { get; set; }
 
         [JsonProperty("sharedSwatches", NullValueHandling = NullValueHandling.Ignore)]
         public SwatchContainer SharedSwatches { get; set; }
@@ -688,8 +691,8 @@ namespace SketchConverter.FileFormat
         [JsonProperty("paragraphStyle", NullValueHandling = NullValueHandling.Ignore)]
         public ParagraphStyle ParagraphStyle { get; set; }
 
-        [JsonProperty("strikethroughStyle")]
-        public dynamic StrikethroughStyle { get; set; }
+        [JsonProperty("strikethroughStyle", NullValueHandling = NullValueHandling.Ignore)]
+        public long? StrikethroughStyle { get; set; }
 
         [JsonProperty("textStyleVerticalAlignmentKey", NullValueHandling = NullValueHandling.Ignore)]
         public long? TextStyleVerticalAlignmentKey { get; set; }
@@ -876,12 +879,6 @@ namespace SketchConverter.FileFormat
 
         [JsonProperty("includeBackgroundColorInInstance")]
         public bool IncludeBackgroundColorInInstance { get; set; }
-
-        /// <summary>
-        /// Deprecated, no longer used by Sketch Cloud
-        /// </summary>
-        [JsonProperty("includeInCloudUpload")]
-        public bool IncludeInCloudUpload { get; set; }
 
         [JsonProperty("isFixedToViewport")]
         public bool IsFixedToViewport { get; set; }
@@ -1410,6 +1407,9 @@ namespace SketchConverter.FileFormat
         [JsonProperty("cornerRadius")]
         public double CornerRadius { get; set; }
 
+        [JsonProperty("cornerStyle")]
+        public long CornerStyle { get; set; }
+
         [JsonProperty("curveFrom")]
         public string CurveFrom { get; set; }
 
@@ -1581,6 +1581,29 @@ namespace SketchConverter.FileFormat
     }
 
     /// <summary>
+    /// Defines ephemeral patch information related to the Cloud collaborative editing feature.
+    /// This information will only be found behind-the-scenes in Cloud documents and won't be
+    /// relevant or visible to users parsing or generating their own Sketch documents.
+    /// </summary>
+    public partial class PatchInfo
+    {
+        [JsonProperty("_class")]
+        public dynamic Class { get; set; }
+
+        [JsonProperty("baseVersionID")]
+        public string BaseVersionId { get; set; }
+
+        [JsonProperty("lastIntegratedPatchID")]
+        public string LastIntegratedPatchId { get; set; }
+
+        [JsonProperty("localPatches")]
+        public FileReference[] LocalPatches { get; set; }
+
+        [JsonProperty("receivedPatches")]
+        public FileReference[] ReceivedPatches { get; set; }
+    }
+
+    /// <summary>
     /// Defines a document's list of swatches
     /// </summary>
     public partial class SwatchContainer
@@ -1624,9 +1647,6 @@ namespace SketchConverter.FileFormat
 
         [JsonProperty("created")]
         public Created Created { get; set; }
-
-        [JsonProperty("fonts")]
-        public string[] Fonts { get; set; }
 
         [JsonProperty("pagesAndArtboards")]
         public PagesAndArtboards PagesAndArtboards { get; set; }
@@ -1712,12 +1732,6 @@ namespace SketchConverter.FileFormat
 
         [JsonProperty("horizontalRulerData")]
         public RulerData HorizontalRulerData { get; set; }
-
-        /// <summary>
-        /// Deprecated, no longer used by Sketch Cloud
-        /// </summary>
-        [JsonProperty("includeInCloudUpload")]
-        public bool IncludeInCloudUpload { get; set; }
 
         [JsonProperty("isFixedToViewport")]
         public bool IsFixedToViewport { get; set; }
@@ -1861,12 +1875,6 @@ namespace SketchConverter.FileFormat
 
         [JsonProperty("includeBackgroundColorInExport", NullValueHandling = NullValueHandling.Ignore)]
         public bool? IncludeBackgroundColorInExport { get; set; }
-
-        /// <summary>
-        /// Deprecated, no longer used by Sketch Cloud
-        /// </summary>
-        [JsonProperty("includeInCloudUpload", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? IncludeInCloudUpload { get; set; }
 
         [JsonProperty("isFixedToViewport")]
         public bool IsFixedToViewport { get; set; }
@@ -2064,7 +2072,7 @@ namespace SketchConverter.FileFormat
     {
     }
 
-    public enum ImageRefClass { MsFontData, MsImageData, MsImmutablePage };
+    public enum ImageRefClass { MsFontData, MsImageData, MsImmutablePage, MsPatch };
 
     public enum FontDataRefClass { MsFontData, MsImageData };
 
@@ -2073,7 +2081,7 @@ namespace SketchConverter.FileFormat
     /// </summary>
     public enum ExportFileFormat { Eps, Jpg, Pdf, Png, Svg, Tiff, Webp };
 
-    public enum PageRefClass { MsImageData, MsImmutablePage };
+    public enum PageRefClass { MsImageData, MsImmutablePage, MsPatch };
 
     /// <summary>
     /// Enumeration of the Apple bundle ids for the various variants of Sketch
@@ -2174,6 +2182,8 @@ namespace SketchConverter.FileFormat
                     return ImageRefClass.MsImageData;
                 case "MSImmutablePage":
                     return ImageRefClass.MsImmutablePage;
+                case "MSPatch":
+                    return ImageRefClass.MsPatch;
             }
             throw new Exception("Cannot unmarshal type ImageRefClass");
         }
@@ -2196,6 +2206,9 @@ namespace SketchConverter.FileFormat
                     return;
                 case ImageRefClass.MsImmutablePage:
                     serializer.Serialize(writer, "MSImmutablePage");
+                    return;
+                case ImageRefClass.MsPatch:
+                    serializer.Serialize(writer, "MSPatch");
                     return;
             }
             throw new Exception("Cannot marshal type ImageRefClass");
@@ -2397,6 +2410,8 @@ namespace SketchConverter.FileFormat
                     return PageRefClass.MsImageData;
                 case "MSImmutablePage":
                     return PageRefClass.MsImmutablePage;
+                case "MSPatch":
+                    return PageRefClass.MsPatch;
             }
             throw new Exception("Cannot unmarshal type PageRefClass");
         }
@@ -2416,6 +2431,9 @@ namespace SketchConverter.FileFormat
                     return;
                 case PageRefClass.MsImmutablePage:
                     serializer.Serialize(writer, "MSImmutablePage");
+                    return;
+                case PageRefClass.MsPatch:
+                    serializer.Serialize(writer, "MSPatch");
                     return;
             }
             throw new Exception("Cannot marshal type PageRefClass");
