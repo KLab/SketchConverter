@@ -16,6 +16,7 @@
  */
 
 using System;
+using System.IO;
 using SketchConverter.FileFormat;
 using UnityEditor;
 using UnityEngine;
@@ -39,9 +40,18 @@ namespace SketchConverter
         public static GameObject GeneratePrefab(SketchFile file, ILayer pageLayer, string prefabPath)
         {
             var gameObject = GenerateGameObject(file, pageLayer);
+            CreateDirectory(Path.GetDirectoryName(prefabPath));
             var prefab = PrefabUtility.SaveAsPrefabAsset(gameObject, prefabPath);
             GameObject.DestroyImmediate(gameObject);
             return prefab;
+
+            void CreateDirectory(string path)
+            {
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+            }
         }
 
         /// <summary>
@@ -71,6 +81,7 @@ namespace SketchConverter
             generator.Decorators.Add(new UguiTextDecorator());
             generator.Decorators.Add(new FillColorDecorator());
             generator.Decorators.Add(new OpacityDecorator());
+            generator.Decorators.Add(new InactiveDecorator());
         }
     }
 }

@@ -19,6 +19,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using SketchConverter.FileFormat;
 using UnityEditor;
 using UnityEditor.Callbacks;
@@ -34,16 +36,16 @@ namespace SketchConverter
     {
         protected static class Constants
         {
-            public static GUIStyle background;
-            public static GUIStyle button;
-            public static Texture2D textureIconSetting;
-            public static GUIStyle padding;
-            public static GUIStyle wordWrapLabel;
-            public static GUIStyle wordWrapMiniLabel;
-            public static GUIStyle dragAndDropButton;
-            public static GUIStyle settingButton;
-            public static string selectSketchFileStepLabel = "STEP1";
-            public static string convertSketchFileStepLabel = "STEP2";
+            public static readonly GUIStyle background;
+            public static readonly GUIStyle button;
+            public static readonly Texture2D textureIconSetting;
+            public static readonly GUIStyle padding;
+            public static readonly GUIStyle wordWrapLabel;
+            public static readonly GUIStyle wordWrapMiniLabel;
+            public static readonly GUIStyle dragAndDropButton;
+            public static readonly GUIStyle settingButton;
+            public static readonly string selectSketchFileStepLabel = "STEP1";
+            public static readonly string convertSketchFileStepLabel = "STEP2";
 
             static Constants()
             {
@@ -69,6 +71,7 @@ namespace SketchConverter
         protected readonly List<Exception> exceptions = new List<Exception>();
         protected Vector2 mainViewScrollPosition = Vector2.zero;
         protected Vector2 exceptionViewScrollPosition = Vector2.zero;
+        protected bool isLoadingSketchFile;
 
         static readonly string SketchFilePathKey = "SketchFilePathKey";
 
@@ -115,11 +118,9 @@ namespace SketchConverter
         protected virtual void OnGUIMain()
         {
             OnGUIToolBar();
-            using (var scrollView = new EditorGUILayout.ScrollViewScope(mainViewScrollPosition, Constants.padding))
-            {
-                mainViewScrollPosition = scrollView.scrollPosition;
-                OnGUIContents();
-            }
+            using var scrollView = new EditorGUILayout.ScrollViewScope(mainViewScrollPosition, Constants.padding);
+            mainViewScrollPosition = scrollView.scrollPosition;
+            OnGUIContents();
         }
 
         protected virtual void OnGUIContents()
@@ -128,7 +129,7 @@ namespace SketchConverter
             {
                 OnGUISelectSketchFile();
             }
-            if (sketchFileTreeView.IsLoaded)
+            if (sketchFileTreeView.IsLoaded && !isLoadingSketchFile)
             {
                 GUILayout.Space(8);
                 using (new EditorGUILayout.VerticalScope(Constants.background))
@@ -158,14 +159,8 @@ namespace SketchConverter
         {
             GUILayout.Label(Constants.selectSketchFileStepLabel, EditorStyles.boldLabel);
             var path = Path.GetFileName(currentOpenSketchFilePath);
-            if (string.IsNullOrEmpty(path))
-            {
-                GUILayout.Label(".sketchファイルを選択して下さい。");
-            }
-            else
-            {
-                GUILayout.Label(Path.GetFileName(currentOpenSketchFilePath));
-            }
+            EditorGUI.BeginDisabledGroup(isLoadingSketchFile);
+            GUILayout.Label(string.IsNullOrEmpty(path) ? ".sketchファイルを選択して下さい。" : Path.GetFileName(currentOpenSketchFilePath));
             if (GUILayout.Button(".sketch ファイル読み込み\n(このボタンにドラッグ＆ドロップも可能)", Constants.dragAndDropButton))
             {
                 OpenSketchFileDialog();
@@ -180,6 +175,7 @@ namespace SketchConverter
             {
                 ReopenSketchFile();
             }
+            EditorGUI.EndDisabledGroup();
         }
 
         protected virtual void OnGUIConvertSketchFile()
@@ -268,8 +264,15 @@ namespace SketchConverter
         /// <param name="sketchPath">sketchファイルのパス</param>
         protected virtual void LoadSketchFile(string sketchPath)
         {
-            sketchFile = Loader.LoadSketchFile(sketchPath);
-            sketchFileTreeView.Load(sketchFile);
+            var context = SynchronizationContext.Current;
+            isLoadingSketchFile = true;
+            Task.Run(() => Loader.LoadSketchFileAsync(sketchPath, context)).ContinueWith(task =>
+            {
+                sketchFile = task.IsCanceled ? null : task.Result;
+                sketchFileTreeView.Load(sketchFile);
+                isLoadingSketchFile = false;
+                Repaint();
+            }, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
         /// <summary>

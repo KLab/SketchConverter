@@ -6,7 +6,7 @@ namespace SketchConverter
     /// <summary>
     /// UnityEditor.EditorUserSettings を利用したデータ保存処理のラップクラス
     /// </summary>
-    public class EditorUserSettings
+    public static class EditorUserSettings
     {
         static readonly string PreviousOpenedSketchFileKey = "SketchConverter.PreviousOpenedSketchFile";
         static readonly string UsedSketchFontListKey = "SketchConverter.UsedSketchFontList";

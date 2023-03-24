@@ -2,10 +2,10 @@
     "name": "SketchConverter.Test",
     "rootNamespace": "",
     "references": [
-        "SketchConverter",
-        "SketchConverter.Examples",
-        "UnityEngine.TestRunner",
-        "UnityEditor.TestRunner"
+        "GUID:e747460647cc54fda816cc5944187129",
+        "GUID:755c641ca0883476dbd622037db1c2e9",
+        "GUID:27619889b8ba8c24980f49ee34dbb44a",
+        "GUID:0acc523941302664db1f4e527237feb3"
     ],
     "includePlatforms": [
         "Editor"

@@ -47,6 +47,11 @@ public static class GameObjectComparer
             var gameObjectA = transformsA[i].NodeObject;
             var gameObjectB = transformsB[i].NodeObject;
             var breadcrumbs = transformsB[i].Breadcrumbs;
+            if (gameObjectA.activeSelf != gameObjectB.activeSelf)
+            {
+                errorMessages.Add($"[{breadcrumbs}]activeSelfが一致しません");
+            }
+
             TestObjectProperties(gameObjectA, gameObjectB, breadcrumbs, errorMessages);
 
             // Componentの比較
@@ -92,26 +97,24 @@ public static class GameObjectComparer
 
     static void TestObjectProperties(Object objectA, Object objectB, string breadcrumbs, List<string> errorMessages)
     {
-        using (var gameObjectPropertiesA = ToSerializedProperties(objectA).GetEnumerator())
-        using (var gameObjectPropertiesB = ToSerializedProperties(objectB).GetEnumerator())
+        using var gameObjectPropertiesA = ToSerializedProperties(objectA).GetEnumerator();
+        using var gameObjectPropertiesB = ToSerializedProperties(objectB).GetEnumerator();
+        while (true)
         {
-            while (true)
+            var hasNextA = gameObjectPropertiesA.MoveNext();
+            var hasNextB = gameObjectPropertiesB.MoveNext();
+            if (!hasNextA && !hasNextB)
             {
-                var hasNextA = gameObjectPropertiesA.MoveNext();
-                var hasNextB = gameObjectPropertiesB.MoveNext();
-                if (!hasNextA && !hasNextB)
-                {
-                    break;
-                }
-                if (!hasNextA || !hasNextB)
-                {
-                    errorMessages.Add($"[{breadcrumbs}:{objectB.GetType().FullName}]Propertyの数が一致しません");
-                    break;
-                }
-                if (!SerializedProperty.DataEquals(gameObjectPropertiesA.Current, gameObjectPropertiesB.Current))
-                {
-                    errorMessages.Add($"[{breadcrumbs}]{objectB.GetType().FullName}({gameObjectPropertiesB.Current.name})が異なります");
-                }
+                break;
+            }
+            if (!hasNextA || !hasNextB)
+            {
+                errorMessages.Add($"[{breadcrumbs}:{objectB.GetType().FullName}]Propertyの数が一致しません");
+                break;
+            }
+            if (!SerializedProperty.DataEquals(gameObjectPropertiesA.Current, gameObjectPropertiesB.Current))
+            {
+                errorMessages.Add($"[{breadcrumbs}]{objectB.GetType().FullName}({gameObjectPropertiesB.Current.name})が異なります");
             }
         }
     }

@@ -15,6 +15,9 @@
  * with other software products is expressly forbidden.
  */
 
+using System.Threading;
+using System.Threading.Tasks;
+
 namespace SketchConverter
 {
     /// <summary>
@@ -25,6 +28,6 @@ namespace SketchConverter
         /// <summary>
         /// .sketch ファイルのパスから .sketch を解析した情報が詰まった SketchFile クラスを返す
         /// </summary>
-        SketchFile Load(string filePath);
+        Task<SketchFile> LoadAsync(string filePath, SynchronizationContext context, CancellationToken cancelToken);
     }
 }

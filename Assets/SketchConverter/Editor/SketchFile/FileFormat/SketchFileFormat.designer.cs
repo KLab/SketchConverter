@@ -41,73 +41,73 @@ namespace SketchConverter.FileFormat
     public partial class SketchFileFormatDesigner
     {
         [JsonProperty("document")]
-        public DocumentClass Document { get; set; }
+        public DocumentClass Document { get; protected set; }
 
         [JsonProperty("meta")]
-        public Meta Meta { get; set; }
+        public Meta Meta { get; protected set; }
 
         [JsonProperty("page")]
-        public PageClass Page { get; set; }
+        public PageClass Page { get; protected set; }
 
         [JsonProperty("user")]
-        public Dictionary<string, UserValue> User { get; set; }
+        public Dictionary<string, UserValue> User { get; protected set; }
 
         [JsonProperty("workspace", NullValueHandling = NullValueHandling.Ignore)]
-        public Workspace Workspace { get; set; }
+        public Workspace Workspace { get; protected set; }
     }
 
     public partial class DocumentClass
     {
         [JsonProperty("_class")]
-        public dynamic Class { get; set; }
+        public dynamic Class { get; protected set; }
 
         [JsonProperty("assets")]
-        public AssetCollection Assets { get; set; }
+        public AssetCollection Assets { get; protected set; }
 
         [JsonProperty("colorSpace")]
-        public long ColorSpace { get; set; }
+        public long ColorSpace { get; protected set; }
 
         [JsonProperty("currentPageIndex")]
-        public long CurrentPageIndex { get; set; }
+        public long CurrentPageIndex { get; protected set; }
 
         [JsonProperty("do_objectID")]
-        public string DoObjectId { get; set; }
+        public string DoObjectId { get; protected set; }
 
         [JsonProperty("documentState", NullValueHandling = NullValueHandling.Ignore)]
-        public Dictionary<string, dynamic> DocumentState { get; set; }
+        public Dictionary<string, dynamic> DocumentState { get; protected set; }
 
         [JsonProperty("fontReferences", NullValueHandling = NullValueHandling.Ignore)]
-        public FontReference[] FontReferences { get; set; }
+        public FontReference[] FontReferences { get; protected set; }
 
         [JsonProperty("foreignLayerStyles")]
-        public ForeignLayerStyle[] ForeignLayerStyles { get; set; }
+        public ForeignLayerStyle[] ForeignLayerStyles { get; protected set; }
 
         [JsonProperty("foreignSwatches", NullValueHandling = NullValueHandling.Ignore)]
-        public ForeignSwatch[] ForeignSwatches { get; set; }
+        public ForeignSwatch[] ForeignSwatches { get; protected set; }
 
         [JsonProperty("foreignSymbols")]
-        public ForeignSymbol[] ForeignSymbols { get; set; }
+        public ForeignSymbol[] ForeignSymbols { get; protected set; }
 
         [JsonProperty("foreignTextStyles")]
-        public ForeignTextStyle[] ForeignTextStyles { get; set; }
+        public ForeignTextStyle[] ForeignTextStyles { get; protected set; }
 
         [JsonProperty("layerStyles")]
-        public SharedStyleContainer LayerStyles { get; set; }
+        public SharedStyleContainer LayerStyles { get; protected set; }
 
         [JsonProperty("layerSymbols", NullValueHandling = NullValueHandling.Ignore)]
-        public SymbolContainer LayerSymbols { get; set; }
+        public SymbolContainer LayerSymbols { get; protected set; }
 
         [JsonProperty("layerTextStyles")]
-        public SharedTextStyleContainer LayerTextStyles { get; set; }
+        public SharedTextStyleContainer LayerTextStyles { get; protected set; }
 
         [JsonProperty("pages")]
-        public FileReference[] Pages { get; set; }
+        public FileReference[] Pages { get; protected set; }
 
         [JsonProperty("patchInfo", NullValueHandling = NullValueHandling.Ignore)]
-        public PatchInfo PatchInfo { get; set; }
+        public PatchInfo PatchInfo { get; protected set; }
 
         [JsonProperty("sharedSwatches", NullValueHandling = NullValueHandling.Ignore)]
-        public SwatchContainer SharedSwatches { get; set; }
+        public SwatchContainer SharedSwatches { get; protected set; }
     }
 
     /// <summary>
@@ -116,31 +116,31 @@ namespace SketchConverter.FileFormat
     public partial class AssetCollection
     {
         [JsonProperty("_class")]
-        public dynamic Class { get; set; }
+        public dynamic Class { get; protected set; }
 
         [JsonProperty("colorAssets")]
-        public ColorAsset[] ColorAssets { get; set; }
+        public ColorAsset[] ColorAssets { get; protected set; }
 
         [JsonProperty("colors")]
-        public Color[] Colors { get; set; }
+        public Color[] Colors { get; protected set; }
 
         [JsonProperty("do_objectID")]
-        public string DoObjectId { get; set; }
+        public string DoObjectId { get; protected set; }
 
         [JsonProperty("exportPresets")]
-        public dynamic[] ExportPresets { get; set; }
+        public dynamic[] ExportPresets { get; protected set; }
 
         [JsonProperty("gradientAssets")]
-        public GradientAsset[] GradientAssets { get; set; }
+        public GradientAsset[] GradientAssets { get; protected set; }
 
         [JsonProperty("gradients")]
-        public Gradient[] Gradients { get; set; }
+        public Gradient[] Gradients { get; protected set; }
 
         [JsonProperty("imageCollection", NullValueHandling = NullValueHandling.Ignore)]
-        public ImageCollection ImageCollection { get; set; }
+        public ImageCollection ImageCollection { get; protected set; }
 
         [JsonProperty("images")]
-        public ImageElement[] Images { get; set; }
+        public ImageElement[] Images { get; protected set; }
     }
 
     /// <summary>
@@ -149,16 +149,16 @@ namespace SketchConverter.FileFormat
     public partial class ColorAsset
     {
         [JsonProperty("_class")]
-        public dynamic Class { get; set; }
+        public dynamic Class { get; protected set; }
 
         [JsonProperty("color")]
-        public Color Color { get; set; }
+        public Color Color { get; protected set; }
 
         [JsonProperty("do_objectID")]
-        public string DoObjectId { get; set; }
+        public string DoObjectId { get; protected set; }
 
         [JsonProperty("name")]
-        public string Name { get; set; }
+        public string Name { get; protected set; }
     }
 
     /// <summary>
@@ -167,26 +167,26 @@ namespace SketchConverter.FileFormat
     public partial class Color
     {
         [JsonProperty("_class")]
-        public dynamic Class { get; set; }
+        public dynamic Class { get; protected set; }
 
         [JsonProperty("alpha")]
         [JsonConverter(typeof(PurpleMinMaxValueCheckConverter))]
-        public double Alpha { get; set; }
+        public double Alpha { get; protected set; }
 
         [JsonProperty("blue")]
         [JsonConverter(typeof(PurpleMinMaxValueCheckConverter))]
-        public double Blue { get; set; }
+        public double Blue { get; protected set; }
 
         [JsonProperty("green")]
         [JsonConverter(typeof(PurpleMinMaxValueCheckConverter))]
-        public double Green { get; set; }
+        public double Green { get; protected set; }
 
         [JsonProperty("red")]
         [JsonConverter(typeof(PurpleMinMaxValueCheckConverter))]
-        public double Red { get; set; }
+        public double Red { get; protected set; }
 
         [JsonProperty("swatchID", NullValueHandling = NullValueHandling.Ignore)]
-        public string SwatchId { get; set; }
+        public string SwatchId { get; protected set; }
     }
 
     /// <summary>
@@ -195,16 +195,16 @@ namespace SketchConverter.FileFormat
     public partial class GradientAsset
     {
         [JsonProperty("_class")]
-        public dynamic Class { get; set; }
+        public dynamic Class { get; protected set; }
 
         [JsonProperty("do_objectID")]
-        public string DoObjectId { get; set; }
+        public string DoObjectId { get; protected set; }
 
         [JsonProperty("gradient")]
-        public Gradient Gradient { get; set; }
+        public Gradient Gradient { get; protected set; }
 
         [JsonProperty("name")]
-        public string Name { get; set; }
+        public string Name { get; protected set; }
     }
 
     /// <summary>
@@ -213,22 +213,22 @@ namespace SketchConverter.FileFormat
     public partial class Gradient
     {
         [JsonProperty("_class")]
-        public dynamic Class { get; set; }
+        public dynamic Class { get; protected set; }
 
         [JsonProperty("elipseLength")]
-        public double ElipseLength { get; set; }
+        public double ElipseLength { get; protected set; }
 
         [JsonProperty("from")]
-        public string From { get; set; }
+        public string From { get; protected set; }
 
         [JsonProperty("gradientType")]
-        public long GradientType { get; set; }
+        public long GradientType { get; protected set; }
 
         [JsonProperty("stops")]
-        public GradientStop[] Stops { get; set; }
+        public GradientStop[] Stops { get; protected set; }
 
         [JsonProperty("to")]
-        public string To { get; set; }
+        public string To { get; protected set; }
     }
 
     /// <summary>
@@ -237,14 +237,14 @@ namespace SketchConverter.FileFormat
     public partial class GradientStop
     {
         [JsonProperty("_class")]
-        public dynamic Class { get; set; }
+        public dynamic Class { get; protected set; }
 
         [JsonProperty("color")]
-        public Color Color { get; set; }
+        public Color Color { get; protected set; }
 
         [JsonProperty("position")]
         [JsonConverter(typeof(PurpleMinMaxValueCheckConverter))]
-        public double Position { get; set; }
+        public double Position { get; protected set; }
     }
 
     /// <summary>
@@ -253,10 +253,10 @@ namespace SketchConverter.FileFormat
     public partial class ImageCollection
     {
         [JsonProperty("_class")]
-        public dynamic Class { get; set; }
+        public dynamic Class { get; protected set; }
 
         [JsonProperty("images")]
-        public Images Images { get; set; }
+        public Images Images { get; protected set; }
     }
 
     public partial class Images
@@ -271,31 +271,31 @@ namespace SketchConverter.FileFormat
     public partial class ImageElement
     {
         [JsonProperty("_class")]
-        public dynamic Class { get; set; }
+        public dynamic Class { get; protected set; }
 
         [JsonProperty("_ref")]
-        public string Ref { get; set; }
+        public string Ref { get; protected set; }
 
         [JsonProperty("_ref_class")]
-        public ImageRefClass RefClass { get; set; }
+        public ImageRefClass RefClass { get; protected set; }
 
         [JsonProperty("data", NullValueHandling = NullValueHandling.Ignore)]
-        public Data Data { get; set; }
+        public Data Data { get; protected set; }
 
         [JsonProperty("sha1", NullValueHandling = NullValueHandling.Ignore)]
-        public Sha1 Sha1 { get; set; }
+        public Sha1 Sha1 { get; protected set; }
     }
 
     public partial class Data
     {
         [JsonProperty("_data")]
-        public string DataData { get; set; }
+        public string DataData { get; protected set; }
     }
 
     public partial class Sha1
     {
         [JsonProperty("_data")]
-        public string Data { get; set; }
+        public string Data { get; protected set; }
     }
 
     /// <summary>
@@ -304,22 +304,22 @@ namespace SketchConverter.FileFormat
     public partial class FontReference
     {
         [JsonProperty("_class")]
-        public dynamic Class { get; set; }
+        public dynamic Class { get; protected set; }
 
         [JsonProperty("fontData")]
-        public DataReference FontData { get; set; }
+        public DataReference FontData { get; protected set; }
 
         [JsonProperty("fontFamilyName")]
-        public string FontFamilyName { get; set; }
+        public string FontFamilyName { get; protected set; }
 
         [JsonProperty("fontFileName")]
-        public string FontFileName { get; set; }
+        public string FontFileName { get; protected set; }
 
         [JsonProperty("options")]
-        public long Options { get; set; }
+        public long Options { get; protected set; }
 
         [JsonProperty("postscriptNames")]
-        public string[] PostscriptNames { get; set; }
+        public string[] PostscriptNames { get; protected set; }
     }
 
     /// <summary>
@@ -328,19 +328,19 @@ namespace SketchConverter.FileFormat
     public partial class DataReference
     {
         [JsonProperty("_class")]
-        public dynamic Class { get; set; }
+        public dynamic Class { get; protected set; }
 
         [JsonProperty("_ref")]
-        public string Ref { get; set; }
+        public string Ref { get; protected set; }
 
         [JsonProperty("_ref_class")]
-        public FontDataRefClass RefClass { get; set; }
+        public FontDataRefClass RefClass { get; protected set; }
 
         [JsonProperty("data")]
-        public Data Data { get; set; }
+        public Data Data { get; protected set; }
 
         [JsonProperty("sha1")]
-        public Sha1 Sha1 { get; set; }
+        public Sha1 Sha1 { get; protected set; }
     }
 
     /// <summary>
@@ -349,25 +349,25 @@ namespace SketchConverter.FileFormat
     public partial class ForeignLayerStyle
     {
         [JsonProperty("_class")]
-        public dynamic Class { get; set; }
+        public dynamic Class { get; protected set; }
 
         [JsonProperty("do_objectID")]
-        public string DoObjectId { get; set; }
+        public string DoObjectId { get; protected set; }
 
         [JsonProperty("libraryID")]
-        public string LibraryId { get; set; }
+        public string LibraryId { get; protected set; }
 
         [JsonProperty("localSharedStyle")]
-        public SharedStyle LocalSharedStyle { get; set; }
+        public SharedStyle LocalSharedStyle { get; protected set; }
 
         [JsonProperty("remoteStyleID")]
-        public string RemoteStyleId { get; set; }
+        public string RemoteStyleId { get; protected set; }
 
         [JsonProperty("sourceLibraryName")]
-        public string SourceLibraryName { get; set; }
+        public string SourceLibraryName { get; protected set; }
 
         [JsonProperty("symbolPrivate")]
-        public bool SymbolPrivate { get; set; }
+        public bool SymbolPrivate { get; protected set; }
     }
 
     /// <summary>
@@ -376,16 +376,16 @@ namespace SketchConverter.FileFormat
     public partial class SharedStyle
     {
         [JsonProperty("_class")]
-        public dynamic Class { get; set; }
+        public dynamic Class { get; protected set; }
 
         [JsonProperty("do_objectID")]
-        public string DoObjectId { get; set; }
+        public string DoObjectId { get; protected set; }
 
         [JsonProperty("name")]
-        public string Name { get; set; }
+        public string Name { get; protected set; }
 
         [JsonProperty("value")]
-        public Style Value { get; set; }
+        public Style Value { get; protected set; }
     }
 
     /// <summary>
@@ -394,49 +394,49 @@ namespace SketchConverter.FileFormat
     public partial class Style
     {
         [JsonProperty("_class")]
-        public dynamic Class { get; set; }
+        public dynamic Class { get; protected set; }
 
         [JsonProperty("blur", NullValueHandling = NullValueHandling.Ignore)]
-        public Blur Blur { get; set; }
+        public Blur Blur { get; protected set; }
 
         [JsonProperty("borderOptions")]
-        public BorderOptions BorderOptions { get; set; }
+        public BorderOptions BorderOptions { get; protected set; }
 
         [JsonProperty("borders", NullValueHandling = NullValueHandling.Ignore)]
-        public Border[] Borders { get; set; }
+        public Border[] Borders { get; protected set; }
 
         [JsonProperty("colorControls")]
-        public ColorControls ColorControls { get; set; }
+        public ColorControls ColorControls { get; protected set; }
 
         [JsonProperty("contextSettings", NullValueHandling = NullValueHandling.Ignore)]
-        public GraphicsContextSettings ContextSettings { get; set; }
+        public GraphicsContextSettings ContextSettings { get; protected set; }
 
         [JsonProperty("do_objectID")]
-        public string DoObjectId { get; set; }
+        public string DoObjectId { get; protected set; }
 
         [JsonProperty("endMarkerType")]
-        public long EndMarkerType { get; set; }
+        public long EndMarkerType { get; protected set; }
 
         [JsonProperty("fills", NullValueHandling = NullValueHandling.Ignore)]
-        public Fill[] Fills { get; set; }
+        public Fill[] Fills { get; protected set; }
 
         [JsonProperty("innerShadows")]
-        public InnerShadow[] InnerShadows { get; set; }
+        public InnerShadow[] InnerShadows { get; protected set; }
 
         [JsonProperty("miterLimit")]
-        public long MiterLimit { get; set; }
+        public long MiterLimit { get; protected set; }
 
         [JsonProperty("shadows", NullValueHandling = NullValueHandling.Ignore)]
-        public Shadow[] Shadows { get; set; }
+        public Shadow[] Shadows { get; protected set; }
 
         [JsonProperty("startMarkerType")]
-        public long StartMarkerType { get; set; }
+        public long StartMarkerType { get; protected set; }
 
         [JsonProperty("textStyle", NullValueHandling = NullValueHandling.Ignore)]
-        public TextStyle TextStyle { get; set; }
+        public TextStyle TextStyle { get; protected set; }
 
         [JsonProperty("windingRule")]
-        public long WindingRule { get; set; }
+        public long WindingRule { get; protected set; }
     }
 
     /// <summary>
@@ -445,25 +445,25 @@ namespace SketchConverter.FileFormat
     public partial class Blur
     {
         [JsonProperty("_class")]
-        public dynamic Class { get; set; }
+        public dynamic Class { get; protected set; }
 
         [JsonProperty("center")]
-        public string Center { get; set; }
+        public string Center { get; protected set; }
 
         [JsonProperty("isEnabled")]
-        public bool IsEnabled { get; set; }
+        public bool IsEnabled { get; protected set; }
 
         [JsonProperty("motionAngle", NullValueHandling = NullValueHandling.Ignore)]
-        public double? MotionAngle { get; set; }
+        public double? MotionAngle { get; protected set; }
 
         [JsonProperty("radius", NullValueHandling = NullValueHandling.Ignore)]
-        public double? Radius { get; set; }
+        public double? Radius { get; protected set; }
 
         [JsonProperty("saturation")]
-        public double Saturation { get; set; }
+        public double Saturation { get; protected set; }
 
         [JsonProperty("type")]
-        public long Type { get; set; }
+        public long Type { get; protected set; }
     }
 
     /// <summary>
@@ -472,19 +472,19 @@ namespace SketchConverter.FileFormat
     public partial class BorderOptions
     {
         [JsonProperty("_class")]
-        public dynamic Class { get; set; }
+        public dynamic Class { get; protected set; }
 
         [JsonProperty("dashPattern")]
-        public double[] DashPattern { get; set; }
+        public double[] DashPattern { get; protected set; }
 
         [JsonProperty("isEnabled")]
-        public bool IsEnabled { get; set; }
+        public bool IsEnabled { get; protected set; }
 
         [JsonProperty("lineCapStyle")]
-        public long LineCapStyle { get; set; }
+        public long LineCapStyle { get; protected set; }
 
         [JsonProperty("lineJoinStyle")]
-        public long LineJoinStyle { get; set; }
+        public long LineJoinStyle { get; protected set; }
     }
 
     /// <summary>
@@ -493,28 +493,28 @@ namespace SketchConverter.FileFormat
     public partial class Border
     {
         [JsonProperty("_class")]
-        public dynamic Class { get; set; }
+        public dynamic Class { get; protected set; }
 
         [JsonProperty("color")]
-        public Color Color { get; set; }
+        public Color Color { get; protected set; }
 
         [JsonProperty("contextSettings")]
-        public GraphicsContextSettings ContextSettings { get; set; }
+        public GraphicsContextSettings ContextSettings { get; protected set; }
 
         [JsonProperty("fillType")]
-        public long FillType { get; set; }
+        public long FillType { get; protected set; }
 
         [JsonProperty("gradient")]
-        public Gradient Gradient { get; set; }
+        public Gradient Gradient { get; protected set; }
 
         [JsonProperty("isEnabled")]
-        public bool IsEnabled { get; set; }
+        public bool IsEnabled { get; protected set; }
 
         [JsonProperty("position")]
-        public long Position { get; set; }
+        public long Position { get; protected set; }
 
         [JsonProperty("thickness")]
-        public double Thickness { get; set; }
+        public double Thickness { get; protected set; }
     }
 
     /// <summary>
@@ -523,13 +523,13 @@ namespace SketchConverter.FileFormat
     public partial class GraphicsContextSettings
     {
         [JsonProperty("_class")]
-        public dynamic Class { get; set; }
+        public dynamic Class { get; protected set; }
 
         [JsonProperty("blendMode")]
-        public long BlendMode { get; set; }
+        public long BlendMode { get; protected set; }
 
         [JsonProperty("opacity")]
-        public double Opacity { get; set; }
+        public double Opacity { get; protected set; }
     }
 
     /// <summary>
@@ -538,26 +538,26 @@ namespace SketchConverter.FileFormat
     public partial class ColorControls
     {
         [JsonProperty("_class")]
-        public dynamic Class { get; set; }
+        public dynamic Class { get; protected set; }
 
         [JsonProperty("brightness")]
         [JsonConverter(typeof(FluffyMinMaxValueCheckConverter))]
-        public double Brightness { get; set; }
+        public double Brightness { get; protected set; }
 
         [JsonProperty("contrast")]
         [JsonConverter(typeof(FluffyMinMaxValueCheckConverter))]
-        public double Contrast { get; set; }
+        public double Contrast { get; protected set; }
 
         [JsonProperty("hue")]
         [JsonConverter(typeof(FluffyMinMaxValueCheckConverter))]
-        public double Hue { get; set; }
+        public double Hue { get; protected set; }
 
         [JsonProperty("isEnabled")]
-        public bool IsEnabled { get; set; }
+        public bool IsEnabled { get; protected set; }
 
         [JsonProperty("saturation")]
         [JsonConverter(typeof(FluffyMinMaxValueCheckConverter))]
-        public double Saturation { get; set; }
+        public double Saturation { get; protected set; }
     }
 
     /// <summary>
@@ -566,37 +566,37 @@ namespace SketchConverter.FileFormat
     public partial class Fill
     {
         [JsonProperty("_class")]
-        public dynamic Class { get; set; }
+        public dynamic Class { get; protected set; }
 
         [JsonProperty("color")]
-        public Color Color { get; set; }
+        public Color Color { get; protected set; }
 
         [JsonProperty("contextSettings")]
-        public GraphicsContextSettings ContextSettings { get; set; }
+        public GraphicsContextSettings ContextSettings { get; protected set; }
 
         [JsonProperty("fillType")]
-        public long FillType { get; set; }
+        public long FillType { get; protected set; }
 
         [JsonProperty("gradient")]
-        public Gradient Gradient { get; set; }
+        public Gradient Gradient { get; protected set; }
 
         [JsonProperty("image", NullValueHandling = NullValueHandling.Ignore)]
-        public ImageElement Image { get; set; }
+        public ImageElement Image { get; protected set; }
 
         [JsonProperty("isEnabled")]
-        public bool IsEnabled { get; set; }
+        public bool IsEnabled { get; protected set; }
 
         [JsonProperty("noiseIndex")]
-        public double NoiseIndex { get; set; }
+        public double NoiseIndex { get; protected set; }
 
         [JsonProperty("noiseIntensity")]
-        public double NoiseIntensity { get; set; }
+        public double NoiseIntensity { get; protected set; }
 
         [JsonProperty("patternFillType")]
-        public long PatternFillType { get; set; }
+        public long PatternFillType { get; protected set; }
 
         [JsonProperty("patternTileScale")]
-        public double PatternTileScale { get; set; }
+        public double PatternTileScale { get; protected set; }
     }
 
     /// <summary>
@@ -605,28 +605,28 @@ namespace SketchConverter.FileFormat
     public partial class InnerShadow
     {
         [JsonProperty("_class")]
-        public dynamic Class { get; set; }
+        public dynamic Class { get; protected set; }
 
         [JsonProperty("blurRadius")]
-        public double BlurRadius { get; set; }
+        public double BlurRadius { get; protected set; }
 
         [JsonProperty("color")]
-        public Color Color { get; set; }
+        public Color Color { get; protected set; }
 
         [JsonProperty("contextSettings")]
-        public GraphicsContextSettings ContextSettings { get; set; }
+        public GraphicsContextSettings ContextSettings { get; protected set; }
 
         [JsonProperty("isEnabled")]
-        public bool IsEnabled { get; set; }
+        public bool IsEnabled { get; protected set; }
 
         [JsonProperty("offsetX")]
-        public double OffsetX { get; set; }
+        public double OffsetX { get; protected set; }
 
         [JsonProperty("offsetY")]
-        public double OffsetY { get; set; }
+        public double OffsetY { get; protected set; }
 
         [JsonProperty("spread")]
-        public double Spread { get; set; }
+        public double Spread { get; protected set; }
     }
 
     /// <summary>
@@ -635,28 +635,28 @@ namespace SketchConverter.FileFormat
     public partial class Shadow
     {
         [JsonProperty("_class")]
-        public dynamic Class { get; set; }
+        public dynamic Class { get; protected set; }
 
         [JsonProperty("blurRadius")]
-        public double BlurRadius { get; set; }
+        public double BlurRadius { get; protected set; }
 
         [JsonProperty("color")]
-        public Color Color { get; set; }
+        public Color Color { get; protected set; }
 
         [JsonProperty("contextSettings")]
-        public GraphicsContextSettings ContextSettings { get; set; }
+        public GraphicsContextSettings ContextSettings { get; protected set; }
 
         [JsonProperty("isEnabled")]
-        public bool IsEnabled { get; set; }
+        public bool IsEnabled { get; protected set; }
 
         [JsonProperty("offsetX")]
-        public double OffsetX { get; set; }
+        public double OffsetX { get; protected set; }
 
         [JsonProperty("offsetY")]
-        public double OffsetY { get; set; }
+        public double OffsetY { get; protected set; }
 
         [JsonProperty("spread")]
-        public double Spread { get; set; }
+        public double Spread { get; protected set; }
     }
 
     /// <summary>
@@ -665,40 +665,40 @@ namespace SketchConverter.FileFormat
     public partial class TextStyle
     {
         [JsonProperty("_class")]
-        public dynamic Class { get; set; }
+        public dynamic Class { get; protected set; }
 
         [JsonProperty("encodedAttributes")]
-        public EncodedAttributes EncodedAttributes { get; set; }
+        public EncodedAttributes EncodedAttributes { get; protected set; }
 
         [JsonProperty("verticalAlignment")]
-        public long VerticalAlignment { get; set; }
+        public long VerticalAlignment { get; protected set; }
     }
 
     public partial class EncodedAttributes
     {
         [JsonProperty("kerning", NullValueHandling = NullValueHandling.Ignore)]
-        public double? Kerning { get; set; }
+        public double? Kerning { get; protected set; }
 
         [JsonProperty("MSAttributedStringColorAttribute", NullValueHandling = NullValueHandling.Ignore)]
-        public Color MsAttributedStringColorAttribute { get; set; }
+        public Color MsAttributedStringColorAttribute { get; protected set; }
 
         [JsonProperty("MSAttributedStringFontAttribute")]
-        public FontDescriptor MsAttributedStringFontAttribute { get; set; }
+        public FontDescriptor MsAttributedStringFontAttribute { get; protected set; }
 
         [JsonProperty("MSAttributedStringTextTransformAttribute", NullValueHandling = NullValueHandling.Ignore)]
-        public long? MsAttributedStringTextTransformAttribute { get; set; }
+        public long? MsAttributedStringTextTransformAttribute { get; protected set; }
 
         [JsonProperty("paragraphStyle", NullValueHandling = NullValueHandling.Ignore)]
-        public ParagraphStyle ParagraphStyle { get; set; }
+        public ParagraphStyle ParagraphStyle { get; protected set; }
 
         [JsonProperty("strikethroughStyle", NullValueHandling = NullValueHandling.Ignore)]
-        public long? StrikethroughStyle { get; set; }
+        public long? StrikethroughStyle { get; protected set; }
 
         [JsonProperty("textStyleVerticalAlignmentKey", NullValueHandling = NullValueHandling.Ignore)]
-        public long? TextStyleVerticalAlignmentKey { get; set; }
+        public long? TextStyleVerticalAlignmentKey { get; protected set; }
 
         [JsonProperty("underlineStyle", NullValueHandling = NullValueHandling.Ignore)]
-        public long? UnderlineStyle { get; set; }
+        public long? UnderlineStyle { get; protected set; }
     }
 
     /// <summary>
@@ -707,22 +707,22 @@ namespace SketchConverter.FileFormat
     public partial class FontDescriptor
     {
         [JsonProperty("_class")]
-        public dynamic Class { get; set; }
+        public dynamic Class { get; protected set; }
 
         [JsonProperty("attributes")]
-        public MsAttributedStringFontAttributeAttributes Attributes { get; set; }
+        public MsAttributedStringFontAttributeAttributes Attributes { get; protected set; }
     }
 
     public partial class MsAttributedStringFontAttributeAttributes
     {
         [JsonProperty("name")]
-        public string Name { get; set; }
+        public string Name { get; protected set; }
 
         [JsonProperty("size")]
-        public double Size { get; set; }
+        public double Size { get; protected set; }
 
         [JsonProperty("variation", NullValueHandling = NullValueHandling.Ignore)]
-        public Dictionary<string, dynamic> Variation { get; set; }
+        public Dictionary<string, dynamic> Variation { get; protected set; }
     }
 
     /// <summary>
@@ -731,22 +731,22 @@ namespace SketchConverter.FileFormat
     public partial class ParagraphStyle
     {
         [JsonProperty("_class")]
-        public dynamic Class { get; set; }
+        public dynamic Class { get; protected set; }
 
         [JsonProperty("alignment", NullValueHandling = NullValueHandling.Ignore)]
-        public long? Alignment { get; set; }
+        public long? Alignment { get; protected set; }
 
         [JsonProperty("allowsDefaultTighteningForTruncation", NullValueHandling = NullValueHandling.Ignore)]
-        public double? AllowsDefaultTighteningForTruncation { get; set; }
+        public double? AllowsDefaultTighteningForTruncation { get; protected set; }
 
         [JsonProperty("maximumLineHeight", NullValueHandling = NullValueHandling.Ignore)]
-        public double? MaximumLineHeight { get; set; }
+        public double? MaximumLineHeight { get; protected set; }
 
         [JsonProperty("minimumLineHeight", NullValueHandling = NullValueHandling.Ignore)]
-        public double? MinimumLineHeight { get; set; }
+        public double? MinimumLineHeight { get; protected set; }
 
         [JsonProperty("paragraphSpacing", NullValueHandling = NullValueHandling.Ignore)]
-        public double? ParagraphSpacing { get; set; }
+        public double? ParagraphSpacing { get; protected set; }
     }
 
     /// <summary>
@@ -755,25 +755,25 @@ namespace SketchConverter.FileFormat
     public partial class ForeignSwatch
     {
         [JsonProperty("_class")]
-        public dynamic Class { get; set; }
+        public dynamic Class { get; protected set; }
 
         [JsonProperty("do_objectID")]
-        public string DoObjectId { get; set; }
+        public string DoObjectId { get; protected set; }
 
         [JsonProperty("libraryID")]
-        public string LibraryId { get; set; }
+        public string LibraryId { get; protected set; }
 
         [JsonProperty("localSwatch")]
-        public Swatch LocalSwatch { get; set; }
+        public Swatch LocalSwatch { get; protected set; }
 
         [JsonProperty("remoteSwatchID")]
-        public string RemoteSwatchId { get; set; }
+        public string RemoteSwatchId { get; protected set; }
 
         [JsonProperty("sourceLibraryName")]
-        public string SourceLibraryName { get; set; }
+        public string SourceLibraryName { get; protected set; }
 
         [JsonProperty("symbolPrivate")]
-        public bool SymbolPrivate { get; set; }
+        public bool SymbolPrivate { get; protected set; }
     }
 
     /// <summary>
@@ -782,16 +782,16 @@ namespace SketchConverter.FileFormat
     public partial class Swatch
     {
         [JsonProperty("_class")]
-        public dynamic Class { get; set; }
+        public dynamic Class { get; protected set; }
 
         [JsonProperty("do_objectID")]
-        public string DoObjectId { get; set; }
+        public string DoObjectId { get; protected set; }
 
         [JsonProperty("name")]
-        public string Name { get; set; }
+        public string Name { get; protected set; }
 
         [JsonProperty("value")]
-        public Color Value { get; set; }
+        public Color Value { get; protected set; }
     }
 
     /// <summary>
@@ -800,28 +800,28 @@ namespace SketchConverter.FileFormat
     public partial class ForeignSymbol
     {
         [JsonProperty("_class")]
-        public dynamic Class { get; set; }
+        public dynamic Class { get; protected set; }
 
         [JsonProperty("do_objectID")]
-        public string DoObjectId { get; set; }
+        public string DoObjectId { get; protected set; }
 
         [JsonProperty("libraryID")]
-        public string LibraryId { get; set; }
+        public string LibraryId { get; protected set; }
 
         [JsonProperty("missingLibraryFontAcknowledged", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? MissingLibraryFontAcknowledged { get; set; }
+        public bool? MissingLibraryFontAcknowledged { get; protected set; }
 
         [JsonProperty("originalMaster")]
-        public SymbolSourceLayer OriginalMaster { get; set; }
+        public SymbolSourceLayer OriginalMaster { get; protected set; }
 
         [JsonProperty("sourceLibraryName")]
-        public string SourceLibraryName { get; set; }
+        public string SourceLibraryName { get; protected set; }
 
         [JsonProperty("symbolMaster")]
-        public SymbolSourceLayer SymbolMaster { get; set; }
+        public SymbolSourceLayer SymbolMaster { get; protected set; }
 
         [JsonProperty("symbolPrivate")]
-        public bool SymbolPrivate { get; set; }
+        public bool SymbolPrivate { get; protected set; }
     }
 
     /// <summary>
@@ -830,134 +830,134 @@ namespace SketchConverter.FileFormat
     public partial class SymbolSourceLayer
     {
         [JsonProperty("_class")]
-        public dynamic Class { get; set; }
+        public dynamic Class { get; protected set; }
 
         [JsonProperty("allowsOverrides")]
-        public bool AllowsOverrides { get; set; }
+        public bool AllowsOverrides { get; protected set; }
 
         [JsonProperty("backgroundColor")]
-        public Color BackgroundColor { get; set; }
+        public Color BackgroundColor { get; protected set; }
 
         [JsonProperty("booleanOperation")]
-        public long BooleanOperation { get; set; }
+        public long BooleanOperation { get; protected set; }
 
         [JsonProperty("clippingMaskMode", NullValueHandling = NullValueHandling.Ignore)]
-        public long? ClippingMaskMode { get; set; }
+        public long? ClippingMaskMode { get; protected set; }
 
         [JsonProperty("do_objectID")]
-        public string DoObjectId { get; set; }
+        public string DoObjectId { get; protected set; }
 
         [JsonProperty("exportOptions")]
-        public ExportOptions ExportOptions { get; set; }
+        public ExportOptions ExportOptions { get; protected set; }
 
         [JsonProperty("flow", NullValueHandling = NullValueHandling.Ignore)]
-        public FlowConnection Flow { get; set; }
+        public FlowConnection Flow { get; protected set; }
 
         [JsonProperty("frame")]
-        public Rect Frame { get; set; }
+        public Rect Frame { get; protected set; }
 
         [JsonProperty("grid", NullValueHandling = NullValueHandling.Ignore)]
-        public SimpleGrid Grid { get; set; }
+        public SimpleGrid Grid { get; protected set; }
 
         [JsonProperty("groupLayout", NullValueHandling = NullValueHandling.Ignore)]
-        public GroupLayout GroupLayout { get; set; }
+        public GroupLayout GroupLayout { get; protected set; }
 
         [JsonProperty("hasBackgroundColor")]
-        public bool HasBackgroundColor { get; set; }
+        public bool HasBackgroundColor { get; protected set; }
 
         [JsonProperty("hasClickThrough")]
-        public bool HasClickThrough { get; set; }
+        public bool HasClickThrough { get; protected set; }
 
         [JsonProperty("hasClippingMask", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? HasClippingMask { get; set; }
+        public bool? HasClippingMask { get; protected set; }
 
         [JsonProperty("horizontalRulerData")]
-        public RulerData HorizontalRulerData { get; set; }
+        public RulerData HorizontalRulerData { get; protected set; }
 
         [JsonProperty("includeBackgroundColorInExport")]
-        public bool IncludeBackgroundColorInExport { get; set; }
+        public bool IncludeBackgroundColorInExport { get; protected set; }
 
         [JsonProperty("includeBackgroundColorInInstance")]
-        public bool IncludeBackgroundColorInInstance { get; set; }
+        public bool IncludeBackgroundColorInInstance { get; protected set; }
 
         [JsonProperty("isFixedToViewport")]
-        public bool IsFixedToViewport { get; set; }
+        public bool IsFixedToViewport { get; protected set; }
 
         [JsonProperty("isFlippedHorizontal")]
-        public bool IsFlippedHorizontal { get; set; }
+        public bool IsFlippedHorizontal { get; protected set; }
 
         [JsonProperty("isFlippedVertical")]
-        public bool IsFlippedVertical { get; set; }
+        public bool IsFlippedVertical { get; protected set; }
 
         [JsonProperty("isFlowHome")]
-        public bool IsFlowHome { get; set; }
+        public bool IsFlowHome { get; protected set; }
 
         [JsonProperty("isLocked")]
-        public bool IsLocked { get; set; }
+        public bool IsLocked { get; protected set; }
 
         [JsonProperty("isVisible")]
-        public bool IsVisible { get; set; }
+        public bool IsVisible { get; protected set; }
 
         [JsonProperty("layerListExpandedType")]
-        public long LayerListExpandedType { get; set; }
+        public long LayerListExpandedType { get; protected set; }
 
         /// <summary>
         /// Symbol sources can contain any layer or layer group except root layers such as artboards
         /// and other symbol sources
         /// </summary>
         [JsonProperty("layers")]
-        public OriginalMasterLayer[] Layers { get; set; }
+        public OriginalMasterLayer[] Layers { get; protected set; }
 
         [JsonProperty("layout", NullValueHandling = NullValueHandling.Ignore)]
-        public LayoutGrid Layout { get; set; }
+        public LayoutGrid Layout { get; protected set; }
 
         [JsonProperty("maintainScrollPosition", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? MaintainScrollPosition { get; set; }
+        public bool? MaintainScrollPosition { get; protected set; }
 
         [JsonProperty("name")]
-        public string Name { get; set; }
+        public string Name { get; protected set; }
 
         [JsonProperty("nameIsFixed")]
-        public bool NameIsFixed { get; set; }
+        public bool NameIsFixed { get; protected set; }
 
         [JsonProperty("overrideProperties")]
-        public OverrideProperty[] OverrideProperties { get; set; }
+        public OverrideProperty[] OverrideProperties { get; protected set; }
 
         [JsonProperty("presetDictionary", NullValueHandling = NullValueHandling.Ignore)]
-        public OriginalMasterPresetDictionary PresetDictionary { get; set; }
+        public OriginalMasterPresetDictionary PresetDictionary { get; protected set; }
 
         [JsonProperty("resizesContent")]
-        public bool ResizesContent { get; set; }
+        public bool ResizesContent { get; protected set; }
 
         /// <summary>
         /// Bitfield representing the resizing constraint
         /// </summary>
         [JsonProperty("resizingConstraint")]
-        public long ResizingConstraint { get; set; }
+        public long ResizingConstraint { get; protected set; }
 
         [JsonProperty("resizingType")]
-        public long ResizingType { get; set; }
+        public long ResizingType { get; protected set; }
 
         [JsonProperty("rotation")]
-        public double Rotation { get; set; }
+        public double Rotation { get; protected set; }
 
         [JsonProperty("sharedStyleID", NullValueHandling = NullValueHandling.Ignore)]
-        public string SharedStyleId { get; set; }
+        public string SharedStyleId { get; protected set; }
 
         [JsonProperty("shouldBreakMaskChain")]
-        public bool ShouldBreakMaskChain { get; set; }
+        public bool ShouldBreakMaskChain { get; protected set; }
 
         [JsonProperty("style", NullValueHandling = NullValueHandling.Ignore)]
-        public Style Style { get; set; }
+        public Style Style { get; protected set; }
 
         [JsonProperty("symbolID")]
-        public string SymbolId { get; set; }
+        public string SymbolId { get; protected set; }
 
         [JsonProperty("userInfo", NullValueHandling = NullValueHandling.Ignore)]
-        public Dictionary<string, dynamic> UserInfo { get; set; }
+        public Dictionary<string, dynamic> UserInfo { get; protected set; }
 
         [JsonProperty("verticalRulerData")]
-        public RulerData VerticalRulerData { get; set; }
+        public RulerData VerticalRulerData { get; protected set; }
     }
 
     /// <summary>
@@ -966,19 +966,19 @@ namespace SketchConverter.FileFormat
     public partial class ExportOptions
     {
         [JsonProperty("_class")]
-        public dynamic Class { get; set; }
+        public dynamic Class { get; protected set; }
 
         [JsonProperty("exportFormats")]
-        public ExportFormat[] ExportFormats { get; set; }
+        public ExportFormat[] ExportFormats { get; protected set; }
 
         [JsonProperty("includedLayerIds")]
-        public string[] IncludedLayerIds { get; set; }
+        public string[] IncludedLayerIds { get; protected set; }
 
         [JsonProperty("layerOptions")]
-        public long LayerOptions { get; set; }
+        public long LayerOptions { get; protected set; }
 
         [JsonProperty("shouldTrim")]
-        public bool ShouldTrim { get; set; }
+        public bool ShouldTrim { get; protected set; }
     }
 
     /// <summary>
@@ -987,25 +987,25 @@ namespace SketchConverter.FileFormat
     public partial class ExportFormat
     {
         [JsonProperty("_class")]
-        public dynamic Class { get; set; }
+        public dynamic Class { get; protected set; }
 
         [JsonProperty("absoluteSize")]
-        public long AbsoluteSize { get; set; }
+        public long AbsoluteSize { get; protected set; }
 
         [JsonProperty("fileFormat")]
-        public ExportFileFormat FileFormat { get; set; }
+        public ExportFileFormat FileFormat { get; protected set; }
 
         [JsonProperty("name")]
-        public string Name { get; set; }
+        public string Name { get; protected set; }
 
         [JsonProperty("namingScheme", NullValueHandling = NullValueHandling.Ignore)]
-        public long? NamingScheme { get; set; }
+        public long? NamingScheme { get; protected set; }
 
         [JsonProperty("scale")]
-        public double Scale { get; set; }
+        public double Scale { get; protected set; }
 
         [JsonProperty("visibleScaleType")]
-        public long VisibleScaleType { get; set; }
+        public long VisibleScaleType { get; protected set; }
     }
 
     /// <summary>
@@ -1014,16 +1014,16 @@ namespace SketchConverter.FileFormat
     public partial class FlowConnection
     {
         [JsonProperty("_class")]
-        public dynamic Class { get; set; }
+        public dynamic Class { get; protected set; }
 
         [JsonProperty("animationType")]
-        public long AnimationType { get; set; }
+        public long AnimationType { get; protected set; }
 
         [JsonProperty("destinationArtboardID")]
-        public dynamic DestinationArtboardId { get; set; }
+        public dynamic DestinationArtboardId { get; protected set; }
 
         [JsonProperty("maintainScrollPosition", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? MaintainScrollPosition { get; set; }
+        public bool? MaintainScrollPosition { get; protected set; }
     }
 
     /// <summary>
@@ -1032,22 +1032,22 @@ namespace SketchConverter.FileFormat
     public partial class Rect
     {
         [JsonProperty("_class")]
-        public dynamic Class { get; set; }
+        public dynamic Class { get; protected set; }
 
         [JsonProperty("constrainProportions")]
-        public bool ConstrainProportions { get; set; }
+        public bool ConstrainProportions { get; protected set; }
 
         [JsonProperty("height")]
-        public double Height { get; set; }
+        public double Height { get; protected set; }
 
         [JsonProperty("width")]
-        public double Width { get; set; }
+        public double Width { get; protected set; }
 
         [JsonProperty("x")]
-        public double X { get; set; }
+        public double X { get; protected set; }
 
         [JsonProperty("y")]
-        public double Y { get; set; }
+        public double Y { get; protected set; }
     }
 
     /// <summary>
@@ -1056,16 +1056,16 @@ namespace SketchConverter.FileFormat
     public partial class SimpleGrid
     {
         [JsonProperty("_class")]
-        public dynamic Class { get; set; }
+        public dynamic Class { get; protected set; }
 
         [JsonProperty("gridSize")]
-        public long GridSize { get; set; }
+        public long GridSize { get; protected set; }
 
         [JsonProperty("isEnabled")]
-        public bool IsEnabled { get; set; }
+        public bool IsEnabled { get; protected set; }
 
         [JsonProperty("thickGridTimes")]
-        public long ThickGridTimes { get; set; }
+        public long ThickGridTimes { get; protected set; }
     }
 
     /// <summary>
@@ -1076,19 +1076,19 @@ namespace SketchConverter.FileFormat
     public partial class GroupLayout
     {
         [JsonProperty("_class")]
-        public dynamic Class { get; set; }
+        public dynamic Class { get; protected set; }
 
         [JsonProperty("axis", NullValueHandling = NullValueHandling.Ignore)]
-        public long? Axis { get; set; }
+        public long? Axis { get; protected set; }
 
         [JsonProperty("layoutAnchor", NullValueHandling = NullValueHandling.Ignore)]
-        public long? LayoutAnchor { get; set; }
+        public long? LayoutAnchor { get; protected set; }
 
         [JsonProperty("maxSize", NullValueHandling = NullValueHandling.Ignore)]
-        public double? MaxSize { get; set; }
+        public double? MaxSize { get; protected set; }
 
         [JsonProperty("minSize", NullValueHandling = NullValueHandling.Ignore)]
-        public double? MinSize { get; set; }
+        public double? MinSize { get; protected set; }
     }
 
     /// <summary>
@@ -1097,13 +1097,13 @@ namespace SketchConverter.FileFormat
     public partial class RulerData
     {
         [JsonProperty("_class")]
-        public dynamic Class { get; set; }
+        public dynamic Class { get; protected set; }
 
         [JsonProperty("base")]
-        public long Base { get; set; }
+        public long Base { get; protected set; }
 
         [JsonProperty("guides")]
-        public long[] Guides { get; set; }
+        public long[] Guides { get; protected set; }
     }
 
     /// <summary>
@@ -1136,172 +1136,172 @@ namespace SketchConverter.FileFormat
     public partial class OriginalMasterLayer
     {
         [JsonProperty("_class")]
-        public dynamic Class { get; set; }
+        public dynamic Class { get; protected set; }
 
         [JsonProperty("booleanOperation")]
-        public long BooleanOperation { get; set; }
+        public long BooleanOperation { get; protected set; }
 
         [JsonProperty("clippingMaskMode", NullValueHandling = NullValueHandling.Ignore)]
-        public long? ClippingMaskMode { get; set; }
+        public long? ClippingMaskMode { get; protected set; }
 
         [JsonProperty("do_objectID")]
-        public string DoObjectId { get; set; }
+        public string DoObjectId { get; protected set; }
 
         [JsonProperty("exportOptions")]
-        public ExportOptions ExportOptions { get; set; }
+        public ExportOptions ExportOptions { get; protected set; }
 
         [JsonProperty("flow", NullValueHandling = NullValueHandling.Ignore)]
-        public FlowConnection Flow { get; set; }
+        public FlowConnection Flow { get; protected set; }
 
         [JsonProperty("frame")]
-        public Rect Frame { get; set; }
+        public Rect Frame { get; protected set; }
 
         [JsonProperty("groupLayout", NullValueHandling = NullValueHandling.Ignore)]
-        public GroupLayout GroupLayout { get; set; }
+        public GroupLayout GroupLayout { get; protected set; }
 
         [JsonProperty("hasClickThrough", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? HasClickThrough { get; set; }
+        public bool? HasClickThrough { get; protected set; }
 
         [JsonProperty("hasClippingMask", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? HasClippingMask { get; set; }
+        public bool? HasClippingMask { get; protected set; }
 
         [JsonProperty("isFixedToViewport")]
-        public bool IsFixedToViewport { get; set; }
+        public bool IsFixedToViewport { get; protected set; }
 
         [JsonProperty("isFlippedHorizontal")]
-        public bool IsFlippedHorizontal { get; set; }
+        public bool IsFlippedHorizontal { get; protected set; }
 
         [JsonProperty("isFlippedVertical")]
-        public bool IsFlippedVertical { get; set; }
+        public bool IsFlippedVertical { get; protected set; }
 
         [JsonProperty("isLocked")]
-        public bool IsLocked { get; set; }
+        public bool IsLocked { get; protected set; }
 
         [JsonProperty("isVisible")]
-        public bool IsVisible { get; set; }
+        public bool IsVisible { get; protected set; }
 
         [JsonProperty("layerListExpandedType")]
-        public long LayerListExpandedType { get; set; }
+        public long LayerListExpandedType { get; protected set; }
 
         [JsonProperty("layers", NullValueHandling = NullValueHandling.Ignore)]
-        public OriginalMasterLayer[] Layers { get; set; }
+        public OriginalMasterLayer[] Layers { get; protected set; }
 
         [JsonProperty("maintainScrollPosition", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? MaintainScrollPosition { get; set; }
+        public bool? MaintainScrollPosition { get; protected set; }
 
         [JsonProperty("name")]
-        public string Name { get; set; }
+        public string Name { get; protected set; }
 
         [JsonProperty("nameIsFixed")]
-        public bool NameIsFixed { get; set; }
+        public bool NameIsFixed { get; protected set; }
 
         /// <summary>
         /// Bitfield representing the resizing constraint
         /// </summary>
         [JsonProperty("resizingConstraint")]
-        public long ResizingConstraint { get; set; }
+        public long ResizingConstraint { get; protected set; }
 
         [JsonProperty("resizingType")]
-        public long ResizingType { get; set; }
+        public long ResizingType { get; protected set; }
 
         [JsonProperty("rotation")]
-        public double Rotation { get; set; }
+        public double Rotation { get; protected set; }
 
         [JsonProperty("sharedStyleID", NullValueHandling = NullValueHandling.Ignore)]
-        public string SharedStyleId { get; set; }
+        public string SharedStyleId { get; protected set; }
 
         [JsonProperty("shouldBreakMaskChain")]
-        public bool ShouldBreakMaskChain { get; set; }
+        public bool ShouldBreakMaskChain { get; protected set; }
 
         [JsonProperty("style", NullValueHandling = NullValueHandling.Ignore)]
-        public Style Style { get; set; }
+        public Style Style { get; protected set; }
 
         [JsonProperty("userInfo", NullValueHandling = NullValueHandling.Ignore)]
-        public Dictionary<string, dynamic> UserInfo { get; set; }
+        public Dictionary<string, dynamic> UserInfo { get; protected set; }
 
         [JsonProperty("edited", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? Edited { get; set; }
+        public bool? Edited { get; protected set; }
 
         [JsonProperty("isClosed", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? IsClosed { get; set; }
+        public bool? IsClosed { get; protected set; }
 
         [JsonProperty("pointRadiusBehaviour", NullValueHandling = NullValueHandling.Ignore)]
-        public long? PointRadiusBehaviour { get; set; }
+        public long? PointRadiusBehaviour { get; protected set; }
 
         [JsonProperty("points", NullValueHandling = NullValueHandling.Ignore)]
-        public CurvePoint[] Points { get; set; }
+        public CurvePoint[] Points { get; protected set; }
 
         [JsonProperty("numberOfPoints", NullValueHandling = NullValueHandling.Ignore)]
-        public long? NumberOfPoints { get; set; }
+        public long? NumberOfPoints { get; protected set; }
 
         [JsonProperty("fixedRadius", NullValueHandling = NullValueHandling.Ignore)]
-        public double? FixedRadius { get; set; }
+        public double? FixedRadius { get; protected set; }
 
         [JsonProperty("hasConvertedToNewRoundCorners", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? HasConvertedToNewRoundCorners { get; set; }
+        public bool? HasConvertedToNewRoundCorners { get; protected set; }
 
         [JsonProperty("needsConvertionToNewRoundCorners", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? NeedsConvertionToNewRoundCorners { get; set; }
+        public bool? NeedsConvertionToNewRoundCorners { get; protected set; }
 
         [JsonProperty("radius", NullValueHandling = NullValueHandling.Ignore)]
-        public double? Radius { get; set; }
+        public double? Radius { get; protected set; }
 
         [JsonProperty("isEquilateral", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? IsEquilateral { get; set; }
+        public bool? IsEquilateral { get; protected set; }
 
         [JsonProperty("windingRule", NullValueHandling = NullValueHandling.Ignore)]
-        public long? WindingRule { get; set; }
+        public long? WindingRule { get; protected set; }
 
         [JsonProperty("attributedString", NullValueHandling = NullValueHandling.Ignore)]
-        public AttributedString AttributedString { get; set; }
+        public AttributedString AttributedString { get; protected set; }
 
         [JsonProperty("automaticallyDrawOnUnderlyingPath", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? AutomaticallyDrawOnUnderlyingPath { get; set; }
+        public bool? AutomaticallyDrawOnUnderlyingPath { get; protected set; }
 
         [JsonProperty("dontSynchroniseWithSymbol", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? DontSynchroniseWithSymbol { get; set; }
+        public bool? DontSynchroniseWithSymbol { get; protected set; }
 
         [JsonProperty("glyphBounds", NullValueHandling = NullValueHandling.Ignore)]
-        public string GlyphBounds { get; set; }
+        public string GlyphBounds { get; protected set; }
 
         [JsonProperty("lineSpacingBehaviour", NullValueHandling = NullValueHandling.Ignore)]
-        public long? LineSpacingBehaviour { get; set; }
+        public long? LineSpacingBehaviour { get; protected set; }
 
         [JsonProperty("textBehaviour", NullValueHandling = NullValueHandling.Ignore)]
-        public long? TextBehaviour { get; set; }
+        public long? TextBehaviour { get; protected set; }
 
         [JsonProperty("horizontalSpacing", NullValueHandling = NullValueHandling.Ignore)]
-        public double? HorizontalSpacing { get; set; }
+        public double? HorizontalSpacing { get; protected set; }
 
         [JsonProperty("overrideValues", NullValueHandling = NullValueHandling.Ignore)]
-        public OverrideValue[] OverrideValues { get; set; }
+        public OverrideValue[] OverrideValues { get; protected set; }
 
         [JsonProperty("scale", NullValueHandling = NullValueHandling.Ignore)]
-        public double? Scale { get; set; }
+        public double? Scale { get; protected set; }
 
         [JsonProperty("symbolID", NullValueHandling = NullValueHandling.Ignore)]
-        public string SymbolId { get; set; }
+        public string SymbolId { get; protected set; }
 
         [JsonProperty("verticalSpacing", NullValueHandling = NullValueHandling.Ignore)]
-        public double? VerticalSpacing { get; set; }
+        public double? VerticalSpacing { get; protected set; }
 
         [JsonProperty("backgroundColor", NullValueHandling = NullValueHandling.Ignore)]
-        public Color BackgroundColor { get; set; }
+        public Color BackgroundColor { get; protected set; }
 
         [JsonProperty("hasBackgroundColor", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? HasBackgroundColor { get; set; }
+        public bool? HasBackgroundColor { get; protected set; }
 
         [JsonProperty("clippingMask", NullValueHandling = NullValueHandling.Ignore)]
-        public string ClippingMask { get; set; }
+        public string ClippingMask { get; protected set; }
 
         [JsonProperty("fillReplacesImage", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? FillReplacesImage { get; set; }
+        public bool? FillReplacesImage { get; protected set; }
 
         [JsonProperty("image", NullValueHandling = NullValueHandling.Ignore)]
-        public ImageElement Image { get; set; }
+        public ImageElement Image { get; protected set; }
 
         [JsonProperty("intendedDPI", NullValueHandling = NullValueHandling.Ignore)]
-        public long? IntendedDpi { get; set; }
+        public long? IntendedDpi { get; protected set; }
     }
 
     /// <summary>
@@ -1310,13 +1310,13 @@ namespace SketchConverter.FileFormat
     public partial class AttributedString
     {
         [JsonProperty("_class")]
-        public dynamic Class { get; set; }
+        public dynamic Class { get; protected set; }
 
         [JsonProperty("attributes")]
-        public StringAttribute[] Attributes { get; set; }
+        public StringAttribute[] Attributes { get; protected set; }
 
         [JsonProperty("string")]
-        public string String { get; set; }
+        public string String { get; protected set; }
     }
 
     /// <summary>
@@ -1325,34 +1325,34 @@ namespace SketchConverter.FileFormat
     public partial class StringAttribute
     {
         [JsonProperty("_class")]
-        public dynamic Class { get; set; }
+        public dynamic Class { get; protected set; }
 
         [JsonProperty("attributes")]
-        public AttributeAttributes Attributes { get; set; }
+        public AttributeAttributes Attributes { get; protected set; }
 
         [JsonProperty("length")]
-        public long Length { get; set; }
+        public long Length { get; protected set; }
 
         [JsonProperty("location")]
-        public long Location { get; set; }
+        public long Location { get; protected set; }
     }
 
     public partial class AttributeAttributes
     {
         [JsonProperty("kerning", NullValueHandling = NullValueHandling.Ignore)]
-        public double? Kerning { get; set; }
+        public double? Kerning { get; protected set; }
 
         [JsonProperty("MSAttributedStringColorAttribute", NullValueHandling = NullValueHandling.Ignore)]
-        public Color MsAttributedStringColorAttribute { get; set; }
+        public Color MsAttributedStringColorAttribute { get; protected set; }
 
         [JsonProperty("MSAttributedStringFontAttribute")]
-        public FontDescriptor MsAttributedStringFontAttribute { get; set; }
+        public FontDescriptor MsAttributedStringFontAttribute { get; protected set; }
 
         [JsonProperty("paragraphStyle", NullValueHandling = NullValueHandling.Ignore)]
-        public ParagraphStyle ParagraphStyle { get; set; }
+        public ParagraphStyle ParagraphStyle { get; protected set; }
 
         [JsonProperty("textStyleVerticalAlignmentKey", NullValueHandling = NullValueHandling.Ignore)]
-        public long? TextStyleVerticalAlignmentKey { get; set; }
+        public long? TextStyleVerticalAlignmentKey { get; protected set; }
     }
 
     /// <summary>
@@ -1361,16 +1361,16 @@ namespace SketchConverter.FileFormat
     public partial class OverrideValue
     {
         [JsonProperty("_class")]
-        public dynamic Class { get; set; }
+        public dynamic Class { get; protected set; }
 
         [JsonProperty("do_objectID", NullValueHandling = NullValueHandling.Ignore)]
-        public string DoObjectId { get; set; }
+        public string DoObjectId { get; protected set; }
 
         [JsonProperty("overrideName")]
-        public string OverrideName { get; set; }
+        public string OverrideName { get; protected set; }
 
         [JsonProperty("value")]
-        public Value Value { get; set; }
+        public Value Value { get; protected set; }
     }
 
     /// <summary>
@@ -1381,19 +1381,19 @@ namespace SketchConverter.FileFormat
     public partial class Reference
     {
         [JsonProperty("_class")]
-        public dynamic Class { get; set; }
+        public dynamic Class { get; protected set; }
 
         [JsonProperty("_ref")]
-        public string Ref { get; set; }
+        public string Ref { get; protected set; }
 
         [JsonProperty("_ref_class")]
-        public ImageRefClass RefClass { get; set; }
+        public ImageRefClass RefClass { get; protected set; }
 
         [JsonProperty("data", NullValueHandling = NullValueHandling.Ignore)]
-        public Data Data { get; set; }
+        public Data Data { get; protected set; }
 
         [JsonProperty("sha1", NullValueHandling = NullValueHandling.Ignore)]
-        public Sha1 Sha1 { get; set; }
+        public Sha1 Sha1 { get; protected set; }
     }
 
     /// <summary>
@@ -1402,31 +1402,31 @@ namespace SketchConverter.FileFormat
     public partial class CurvePoint
     {
         [JsonProperty("_class")]
-        public dynamic Class { get; set; }
+        public dynamic Class { get; protected set; }
 
         [JsonProperty("cornerRadius")]
-        public double CornerRadius { get; set; }
+        public double CornerRadius { get; protected set; }
 
         [JsonProperty("cornerStyle")]
-        public long CornerStyle { get; set; }
+        public long CornerStyle { get; protected set; }
 
         [JsonProperty("curveFrom")]
-        public string CurveFrom { get; set; }
+        public string CurveFrom { get; protected set; }
 
         [JsonProperty("curveMode")]
-        public long CurveMode { get; set; }
+        public long CurveMode { get; protected set; }
 
         [JsonProperty("curveTo")]
-        public string CurveTo { get; set; }
+        public string CurveTo { get; protected set; }
 
         [JsonProperty("hasCurveFrom")]
-        public bool HasCurveFrom { get; set; }
+        public bool HasCurveFrom { get; protected set; }
 
         [JsonProperty("hasCurveTo")]
-        public bool HasCurveTo { get; set; }
+        public bool HasCurveTo { get; protected set; }
 
         [JsonProperty("point")]
-        public string Point { get; set; }
+        public string Point { get; protected set; }
     }
 
     /// <summary>
@@ -1435,43 +1435,43 @@ namespace SketchConverter.FileFormat
     public partial class LayoutGrid
     {
         [JsonProperty("_class")]
-        public dynamic Class { get; set; }
+        public dynamic Class { get; protected set; }
 
         [JsonProperty("columnWidth")]
-        public long ColumnWidth { get; set; }
+        public long ColumnWidth { get; protected set; }
 
         [JsonProperty("drawHorizontal")]
-        public bool DrawHorizontal { get; set; }
+        public bool DrawHorizontal { get; protected set; }
 
         [JsonProperty("drawHorizontalLines")]
-        public bool DrawHorizontalLines { get; set; }
+        public bool DrawHorizontalLines { get; protected set; }
 
         [JsonProperty("drawVertical")]
-        public bool DrawVertical { get; set; }
+        public bool DrawVertical { get; protected set; }
 
         [JsonProperty("gutterHeight")]
-        public long GutterHeight { get; set; }
+        public long GutterHeight { get; protected set; }
 
         [JsonProperty("guttersOutside")]
-        public bool GuttersOutside { get; set; }
+        public bool GuttersOutside { get; protected set; }
 
         [JsonProperty("gutterWidth")]
-        public long GutterWidth { get; set; }
+        public long GutterWidth { get; protected set; }
 
         [JsonProperty("horizontalOffset")]
-        public long HorizontalOffset { get; set; }
+        public long HorizontalOffset { get; protected set; }
 
         [JsonProperty("isEnabled")]
-        public bool IsEnabled { get; set; }
+        public bool IsEnabled { get; protected set; }
 
         [JsonProperty("numberOfColumns")]
-        public long NumberOfColumns { get; set; }
+        public long NumberOfColumns { get; protected set; }
 
         [JsonProperty("rowHeightMultiplication")]
-        public long RowHeightMultiplication { get; set; }
+        public long RowHeightMultiplication { get; protected set; }
 
         [JsonProperty("totalWidth")]
-        public long TotalWidth { get; set; }
+        public long TotalWidth { get; protected set; }
     }
 
     /// <summary>
@@ -1480,13 +1480,13 @@ namespace SketchConverter.FileFormat
     public partial class OverrideProperty
     {
         [JsonProperty("_class")]
-        public dynamic Class { get; set; }
+        public dynamic Class { get; protected set; }
 
         [JsonProperty("canOverride")]
-        public bool CanOverride { get; set; }
+        public bool CanOverride { get; protected set; }
 
         [JsonProperty("overrideName")]
-        public string OverrideName { get; set; }
+        public string OverrideName { get; protected set; }
     }
 
     public partial class OriginalMasterPresetDictionary
@@ -1499,25 +1499,25 @@ namespace SketchConverter.FileFormat
     public partial class ForeignTextStyle
     {
         [JsonProperty("_class")]
-        public dynamic Class { get; set; }
+        public dynamic Class { get; protected set; }
 
         [JsonProperty("libraryID")]
-        public string LibraryId { get; set; }
+        public string LibraryId { get; protected set; }
 
         [JsonProperty("localSharedStyle")]
-        public SharedStyle LocalSharedStyle { get; set; }
+        public SharedStyle LocalSharedStyle { get; protected set; }
 
         [JsonProperty("missingLibraryFontAcknowledged", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? MissingLibraryFontAcknowledged { get; set; }
+        public bool? MissingLibraryFontAcknowledged { get; protected set; }
 
         [JsonProperty("remoteStyleID")]
-        public string RemoteStyleId { get; set; }
+        public string RemoteStyleId { get; protected set; }
 
         [JsonProperty("sourceLibraryName")]
-        public string SourceLibraryName { get; set; }
+        public string SourceLibraryName { get; protected set; }
 
         [JsonProperty("symbolPrivate")]
-        public bool SymbolPrivate { get; set; }
+        public bool SymbolPrivate { get; protected set; }
     }
 
     /// <summary>
@@ -1526,13 +1526,13 @@ namespace SketchConverter.FileFormat
     public partial class SharedStyleContainer
     {
         [JsonProperty("_class")]
-        public dynamic Class { get; set; }
+        public dynamic Class { get; protected set; }
 
         [JsonProperty("do_objectID", NullValueHandling = NullValueHandling.Ignore)]
-        public string DoObjectId { get; set; }
+        public string DoObjectId { get; protected set; }
 
         [JsonProperty("objects")]
-        public SharedStyle[] Objects { get; set; }
+        public SharedStyle[] Objects { get; protected set; }
     }
 
     /// <summary>
@@ -1541,13 +1541,13 @@ namespace SketchConverter.FileFormat
     public partial class SymbolContainer
     {
         [JsonProperty("_class")]
-        public dynamic Class { get; set; }
+        public dynamic Class { get; protected set; }
 
         [JsonProperty("do_objectID", NullValueHandling = NullValueHandling.Ignore)]
-        public string DoObjectId { get; set; }
+        public string DoObjectId { get; protected set; }
 
         [JsonProperty("objects")]
-        public dynamic[] Objects { get; set; }
+        public dynamic[] Objects { get; protected set; }
     }
 
     /// <summary>
@@ -1556,13 +1556,13 @@ namespace SketchConverter.FileFormat
     public partial class SharedTextStyleContainer
     {
         [JsonProperty("_class")]
-        public dynamic Class { get; set; }
+        public dynamic Class { get; protected set; }
 
         [JsonProperty("do_objectID", NullValueHandling = NullValueHandling.Ignore)]
-        public string DoObjectId { get; set; }
+        public string DoObjectId { get; protected set; }
 
         [JsonProperty("objects")]
-        public SharedStyle[] Objects { get; set; }
+        public SharedStyle[] Objects { get; protected set; }
     }
 
     /// <summary>
@@ -1571,13 +1571,13 @@ namespace SketchConverter.FileFormat
     public partial class FileReference
     {
         [JsonProperty("_class")]
-        public dynamic Class { get; set; }
+        public dynamic Class { get; protected set; }
 
         [JsonProperty("_ref")]
-        public string Ref { get; set; }
+        public string Ref { get; protected set; }
 
         [JsonProperty("_ref_class")]
-        public PageRefClass RefClass { get; set; }
+        public PageRefClass RefClass { get; protected set; }
     }
 
     /// <summary>
@@ -1588,19 +1588,19 @@ namespace SketchConverter.FileFormat
     public partial class PatchInfo
     {
         [JsonProperty("_class")]
-        public dynamic Class { get; set; }
+        public dynamic Class { get; protected set; }
 
         [JsonProperty("baseVersionID")]
-        public string BaseVersionId { get; set; }
+        public string BaseVersionId { get; protected set; }
 
         [JsonProperty("lastIntegratedPatchID")]
-        public string LastIntegratedPatchId { get; set; }
+        public string LastIntegratedPatchId { get; protected set; }
 
         [JsonProperty("localPatches")]
-        public FileReference[] LocalPatches { get; set; }
+        public FileReference[] LocalPatches { get; protected set; }
 
         [JsonProperty("receivedPatches")]
-        public FileReference[] ReceivedPatches { get; set; }
+        public FileReference[] ReceivedPatches { get; protected set; }
     }
 
     /// <summary>
@@ -1609,13 +1609,13 @@ namespace SketchConverter.FileFormat
     public partial class SwatchContainer
     {
         [JsonProperty("_class")]
-        public dynamic Class { get; set; }
+        public dynamic Class { get; protected set; }
 
         [JsonProperty("do_objectID", NullValueHandling = NullValueHandling.Ignore)]
-        public string DoObjectId { get; set; }
+        public string DoObjectId { get; protected set; }
 
         [JsonProperty("objects")]
-        public Swatch[] Objects { get; set; }
+        public Swatch[] Objects { get; protected set; }
     }
 
     /// <summary>
@@ -1625,67 +1625,67 @@ namespace SketchConverter.FileFormat
     public partial class Meta
     {
         [JsonProperty("app")]
-        public SketchBundleIdentifier App { get; set; }
+        public SketchBundleIdentifier App { get; protected set; }
 
         [JsonProperty("appVersion")]
-        public string AppVersion { get; set; }
+        public string AppVersion { get; protected set; }
 
         [JsonProperty("autosaved")]
-        public long Autosaved { get; set; }
+        public long Autosaved { get; protected set; }
 
         [JsonProperty("build")]
-        public long Build { get; set; }
+        public long Build { get; protected set; }
 
         [JsonProperty("coeditCompatibilityVersion", NullValueHandling = NullValueHandling.Ignore)]
-        public double? CoeditCompatibilityVersion { get; set; }
+        public double? CoeditCompatibilityVersion { get; protected set; }
 
         [JsonProperty("commit")]
-        public string Commit { get; set; }
+        public string Commit { get; protected set; }
 
         [JsonProperty("compatibilityVersion")]
-        public dynamic CompatibilityVersion { get; set; }
+        public dynamic CompatibilityVersion { get; protected set; }
 
         [JsonProperty("created")]
-        public Created Created { get; set; }
+        public Created Created { get; protected set; }
 
         [JsonProperty("pagesAndArtboards")]
-        public PagesAndArtboards PagesAndArtboards { get; set; }
+        public PagesAndArtboards PagesAndArtboards { get; protected set; }
 
         [JsonProperty("saveHistory")]
-        public string[] SaveHistory { get; set; }
+        public string[] SaveHistory { get; protected set; }
 
         [JsonProperty("variant")]
-        public SketchVariant Variant { get; set; }
+        public SketchVariant Variant { get; protected set; }
 
         [JsonProperty("version")]
-        public long Version { get; set; }
+        public long Version { get; protected set; }
     }
 
     public partial class Created
     {
         [JsonProperty("app")]
-        public SketchBundleIdentifier App { get; set; }
+        public SketchBundleIdentifier App { get; protected set; }
 
         [JsonProperty("appVersion")]
-        public string AppVersion { get; set; }
+        public string AppVersion { get; protected set; }
 
         [JsonProperty("build")]
-        public long Build { get; set; }
+        public long Build { get; protected set; }
 
         [JsonProperty("coeditCompatibilityVersion", NullValueHandling = NullValueHandling.Ignore)]
-        public double? CoeditCompatibilityVersion { get; set; }
+        public double? CoeditCompatibilityVersion { get; protected set; }
 
         [JsonProperty("commit")]
-        public string Commit { get; set; }
+        public string Commit { get; protected set; }
 
         [JsonProperty("compatibilityVersion")]
-        public double CompatibilityVersion { get; set; }
+        public double CompatibilityVersion { get; protected set; }
 
         [JsonProperty("variant")]
-        public SketchVariant Variant { get; set; }
+        public SketchVariant Variant { get; protected set; }
 
         [JsonProperty("version")]
-        public double Version { get; set; }
+        public double Version { get; protected set; }
     }
 
     public partial class PagesAndArtboards
@@ -1698,103 +1698,103 @@ namespace SketchConverter.FileFormat
     public partial class PageClass
     {
         [JsonProperty("_class")]
-        public dynamic Class { get; set; }
+        public dynamic Class { get; protected set; }
 
         [JsonProperty("booleanOperation")]
-        public long BooleanOperation { get; set; }
+        public long BooleanOperation { get; protected set; }
 
         [JsonProperty("clippingMaskMode", NullValueHandling = NullValueHandling.Ignore)]
-        public long? ClippingMaskMode { get; set; }
+        public long? ClippingMaskMode { get; protected set; }
 
         [JsonProperty("do_objectID")]
-        public string DoObjectId { get; set; }
+        public string DoObjectId { get; protected set; }
 
         [JsonProperty("exportOptions")]
-        public ExportOptions ExportOptions { get; set; }
+        public ExportOptions ExportOptions { get; protected set; }
 
         [JsonProperty("flow", NullValueHandling = NullValueHandling.Ignore)]
-        public FlowConnection Flow { get; set; }
+        public FlowConnection Flow { get; protected set; }
 
         [JsonProperty("frame")]
-        public Rect Frame { get; set; }
+        public Rect Frame { get; protected set; }
 
         [JsonProperty("grid", NullValueHandling = NullValueHandling.Ignore)]
-        public SimpleGrid Grid { get; set; }
+        public SimpleGrid Grid { get; protected set; }
 
         [JsonProperty("groupLayout", NullValueHandling = NullValueHandling.Ignore)]
-        public GroupLayout GroupLayout { get; set; }
+        public GroupLayout GroupLayout { get; protected set; }
 
         [JsonProperty("hasClickThrough")]
-        public bool HasClickThrough { get; set; }
+        public bool HasClickThrough { get; protected set; }
 
         [JsonProperty("hasClippingMask", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? HasClippingMask { get; set; }
+        public bool? HasClippingMask { get; protected set; }
 
         [JsonProperty("horizontalRulerData")]
-        public RulerData HorizontalRulerData { get; set; }
+        public RulerData HorizontalRulerData { get; protected set; }
 
         [JsonProperty("isFixedToViewport")]
-        public bool IsFixedToViewport { get; set; }
+        public bool IsFixedToViewport { get; protected set; }
 
         [JsonProperty("isFlippedHorizontal")]
-        public bool IsFlippedHorizontal { get; set; }
+        public bool IsFlippedHorizontal { get; protected set; }
 
         [JsonProperty("isFlippedVertical")]
-        public bool IsFlippedVertical { get; set; }
+        public bool IsFlippedVertical { get; protected set; }
 
         [JsonProperty("isLocked")]
-        public bool IsLocked { get; set; }
+        public bool IsLocked { get; protected set; }
 
         [JsonProperty("isVisible")]
-        public bool IsVisible { get; set; }
+        public bool IsVisible { get; protected set; }
 
         [JsonProperty("layerListExpandedType")]
-        public long LayerListExpandedType { get; set; }
+        public long LayerListExpandedType { get; protected set; }
 
         /// <summary>
         /// Pages can contain any layer or layer group but no pages
         /// </summary>
         [JsonProperty("layers")]
-        public PageLayer[] Layers { get; set; }
+        public PageLayer[] Layers { get; protected set; }
 
         [JsonProperty("layout", NullValueHandling = NullValueHandling.Ignore)]
-        public LayoutGrid Layout { get; set; }
+        public LayoutGrid Layout { get; protected set; }
 
         [JsonProperty("maintainScrollPosition", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? MaintainScrollPosition { get; set; }
+        public bool? MaintainScrollPosition { get; protected set; }
 
         [JsonProperty("name")]
-        public string Name { get; set; }
+        public string Name { get; protected set; }
 
         [JsonProperty("nameIsFixed")]
-        public bool NameIsFixed { get; set; }
+        public bool NameIsFixed { get; protected set; }
 
         /// <summary>
         /// Bitfield representing the resizing constraint
         /// </summary>
         [JsonProperty("resizingConstraint")]
-        public long ResizingConstraint { get; set; }
+        public long ResizingConstraint { get; protected set; }
 
         [JsonProperty("resizingType")]
-        public long ResizingType { get; set; }
+        public long ResizingType { get; protected set; }
 
         [JsonProperty("rotation")]
-        public double Rotation { get; set; }
+        public double Rotation { get; protected set; }
 
         [JsonProperty("sharedStyleID", NullValueHandling = NullValueHandling.Ignore)]
-        public string SharedStyleId { get; set; }
+        public string SharedStyleId { get; protected set; }
 
         [JsonProperty("shouldBreakMaskChain")]
-        public bool ShouldBreakMaskChain { get; set; }
+        public bool ShouldBreakMaskChain { get; protected set; }
 
         [JsonProperty("style", NullValueHandling = NullValueHandling.Ignore)]
-        public Style Style { get; set; }
+        public Style Style { get; protected set; }
 
         [JsonProperty("userInfo", NullValueHandling = NullValueHandling.Ignore)]
-        public Dictionary<string, dynamic> UserInfo { get; set; }
+        public Dictionary<string, dynamic> UserInfo { get; protected set; }
 
         [JsonProperty("verticalRulerData")]
-        public RulerData VerticalRulerData { get; set; }
+        public RulerData VerticalRulerData { get; protected set; }
     }
 
     /// <summary>
@@ -1832,70 +1832,70 @@ namespace SketchConverter.FileFormat
     public partial class PageLayer
     {
         [JsonProperty("_class")]
-        public dynamic Class { get; set; }
+        public dynamic Class { get; protected set; }
 
         [JsonProperty("backgroundColor", NullValueHandling = NullValueHandling.Ignore)]
-        public Color BackgroundColor { get; set; }
+        public Color BackgroundColor { get; protected set; }
 
         [JsonProperty("booleanOperation")]
-        public long BooleanOperation { get; set; }
+        public long BooleanOperation { get; protected set; }
 
         [JsonProperty("clippingMaskMode", NullValueHandling = NullValueHandling.Ignore)]
-        public long? ClippingMaskMode { get; set; }
+        public long? ClippingMaskMode { get; protected set; }
 
         [JsonProperty("do_objectID")]
-        public string DoObjectId { get; set; }
+        public string DoObjectId { get; protected set; }
 
         [JsonProperty("exportOptions")]
-        public ExportOptions ExportOptions { get; set; }
+        public ExportOptions ExportOptions { get; protected set; }
 
         [JsonProperty("flow", NullValueHandling = NullValueHandling.Ignore)]
-        public FlowConnection Flow { get; set; }
+        public FlowConnection Flow { get; protected set; }
 
         [JsonProperty("frame")]
-        public Rect Frame { get; set; }
+        public Rect Frame { get; protected set; }
 
         [JsonProperty("grid", NullValueHandling = NullValueHandling.Ignore)]
-        public SimpleGrid Grid { get; set; }
+        public SimpleGrid Grid { get; protected set; }
 
         [JsonProperty("groupLayout", NullValueHandling = NullValueHandling.Ignore)]
-        public GroupLayout GroupLayout { get; set; }
+        public GroupLayout GroupLayout { get; protected set; }
 
         [JsonProperty("hasBackgroundColor", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? HasBackgroundColor { get; set; }
+        public bool? HasBackgroundColor { get; protected set; }
 
         [JsonProperty("hasClickThrough", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? HasClickThrough { get; set; }
+        public bool? HasClickThrough { get; protected set; }
 
         [JsonProperty("hasClippingMask", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? HasClippingMask { get; set; }
+        public bool? HasClippingMask { get; protected set; }
 
         [JsonProperty("horizontalRulerData", NullValueHandling = NullValueHandling.Ignore)]
-        public RulerData HorizontalRulerData { get; set; }
+        public RulerData HorizontalRulerData { get; protected set; }
 
         [JsonProperty("includeBackgroundColorInExport", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? IncludeBackgroundColorInExport { get; set; }
+        public bool? IncludeBackgroundColorInExport { get; protected set; }
 
         [JsonProperty("isFixedToViewport")]
-        public bool IsFixedToViewport { get; set; }
+        public bool IsFixedToViewport { get; protected set; }
 
         [JsonProperty("isFlippedHorizontal")]
-        public bool IsFlippedHorizontal { get; set; }
+        public bool IsFlippedHorizontal { get; protected set; }
 
         [JsonProperty("isFlippedVertical")]
-        public bool IsFlippedVertical { get; set; }
+        public bool IsFlippedVertical { get; protected set; }
 
         [JsonProperty("isFlowHome", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? IsFlowHome { get; set; }
+        public bool? IsFlowHome { get; protected set; }
 
         [JsonProperty("isLocked")]
-        public bool IsLocked { get; set; }
+        public bool IsLocked { get; protected set; }
 
         [JsonProperty("isVisible")]
-        public bool IsVisible { get; set; }
+        public bool IsVisible { get; protected set; }
 
         [JsonProperty("layerListExpandedType")]
-        public long LayerListExpandedType { get; set; }
+        public long LayerListExpandedType { get; protected set; }
 
         /// <summary>
         /// Artboards can contain any layer or layer group except root layers such as other artboards
@@ -1905,139 +1905,139 @@ namespace SketchConverter.FileFormat
         /// and other symbol sources
         /// </summary>
         [JsonProperty("layers", NullValueHandling = NullValueHandling.Ignore)]
-        public OriginalMasterLayer[] Layers { get; set; }
+        public OriginalMasterLayer[] Layers { get; protected set; }
 
         [JsonProperty("layout", NullValueHandling = NullValueHandling.Ignore)]
-        public LayoutGrid Layout { get; set; }
+        public LayoutGrid Layout { get; protected set; }
 
         [JsonProperty("maintainScrollPosition", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? MaintainScrollPosition { get; set; }
+        public bool? MaintainScrollPosition { get; protected set; }
 
         [JsonProperty("name")]
-        public string Name { get; set; }
+        public string Name { get; protected set; }
 
         [JsonProperty("nameIsFixed")]
-        public bool NameIsFixed { get; set; }
+        public bool NameIsFixed { get; protected set; }
 
         [JsonProperty("presetDictionary", NullValueHandling = NullValueHandling.Ignore)]
-        public LayerPresetDictionary PresetDictionary { get; set; }
+        public LayerPresetDictionary PresetDictionary { get; protected set; }
 
         [JsonProperty("resizesContent", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? ResizesContent { get; set; }
+        public bool? ResizesContent { get; protected set; }
 
         /// <summary>
         /// Bitfield representing the resizing constraint
         /// </summary>
         [JsonProperty("resizingConstraint")]
-        public long ResizingConstraint { get; set; }
+        public long ResizingConstraint { get; protected set; }
 
         [JsonProperty("resizingType")]
-        public long ResizingType { get; set; }
+        public long ResizingType { get; protected set; }
 
         [JsonProperty("rotation")]
-        public double Rotation { get; set; }
+        public double Rotation { get; protected set; }
 
         [JsonProperty("sharedStyleID", NullValueHandling = NullValueHandling.Ignore)]
-        public string SharedStyleId { get; set; }
+        public string SharedStyleId { get; protected set; }
 
         [JsonProperty("shouldBreakMaskChain")]
-        public bool ShouldBreakMaskChain { get; set; }
+        public bool ShouldBreakMaskChain { get; protected set; }
 
         [JsonProperty("style", NullValueHandling = NullValueHandling.Ignore)]
-        public Style Style { get; set; }
+        public Style Style { get; protected set; }
 
         [JsonProperty("userInfo", NullValueHandling = NullValueHandling.Ignore)]
-        public Dictionary<string, dynamic> UserInfo { get; set; }
+        public Dictionary<string, dynamic> UserInfo { get; protected set; }
 
         [JsonProperty("verticalRulerData", NullValueHandling = NullValueHandling.Ignore)]
-        public RulerData VerticalRulerData { get; set; }
+        public RulerData VerticalRulerData { get; protected set; }
 
         [JsonProperty("edited", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? Edited { get; set; }
+        public bool? Edited { get; protected set; }
 
         [JsonProperty("isClosed", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? IsClosed { get; set; }
+        public bool? IsClosed { get; protected set; }
 
         [JsonProperty("pointRadiusBehaviour", NullValueHandling = NullValueHandling.Ignore)]
-        public long? PointRadiusBehaviour { get; set; }
+        public long? PointRadiusBehaviour { get; protected set; }
 
         [JsonProperty("points", NullValueHandling = NullValueHandling.Ignore)]
-        public CurvePoint[] Points { get; set; }
+        public CurvePoint[] Points { get; protected set; }
 
         [JsonProperty("numberOfPoints", NullValueHandling = NullValueHandling.Ignore)]
-        public long? NumberOfPoints { get; set; }
+        public long? NumberOfPoints { get; protected set; }
 
         [JsonProperty("fixedRadius", NullValueHandling = NullValueHandling.Ignore)]
-        public double? FixedRadius { get; set; }
+        public double? FixedRadius { get; protected set; }
 
         [JsonProperty("hasConvertedToNewRoundCorners", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? HasConvertedToNewRoundCorners { get; set; }
+        public bool? HasConvertedToNewRoundCorners { get; protected set; }
 
         [JsonProperty("needsConvertionToNewRoundCorners", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? NeedsConvertionToNewRoundCorners { get; set; }
+        public bool? NeedsConvertionToNewRoundCorners { get; protected set; }
 
         [JsonProperty("radius", NullValueHandling = NullValueHandling.Ignore)]
-        public double? Radius { get; set; }
+        public double? Radius { get; protected set; }
 
         [JsonProperty("isEquilateral", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? IsEquilateral { get; set; }
+        public bool? IsEquilateral { get; protected set; }
 
         [JsonProperty("windingRule", NullValueHandling = NullValueHandling.Ignore)]
-        public long? WindingRule { get; set; }
+        public long? WindingRule { get; protected set; }
 
         [JsonProperty("attributedString", NullValueHandling = NullValueHandling.Ignore)]
-        public AttributedString AttributedString { get; set; }
+        public AttributedString AttributedString { get; protected set; }
 
         [JsonProperty("automaticallyDrawOnUnderlyingPath", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? AutomaticallyDrawOnUnderlyingPath { get; set; }
+        public bool? AutomaticallyDrawOnUnderlyingPath { get; protected set; }
 
         [JsonProperty("dontSynchroniseWithSymbol", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? DontSynchroniseWithSymbol { get; set; }
+        public bool? DontSynchroniseWithSymbol { get; protected set; }
 
         [JsonProperty("glyphBounds", NullValueHandling = NullValueHandling.Ignore)]
-        public string GlyphBounds { get; set; }
+        public string GlyphBounds { get; protected set; }
 
         [JsonProperty("lineSpacingBehaviour", NullValueHandling = NullValueHandling.Ignore)]
-        public long? LineSpacingBehaviour { get; set; }
+        public long? LineSpacingBehaviour { get; protected set; }
 
         [JsonProperty("textBehaviour", NullValueHandling = NullValueHandling.Ignore)]
-        public long? TextBehaviour { get; set; }
+        public long? TextBehaviour { get; protected set; }
 
         [JsonProperty("allowsOverrides", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? AllowsOverrides { get; set; }
+        public bool? AllowsOverrides { get; protected set; }
 
         [JsonProperty("includeBackgroundColorInInstance", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? IncludeBackgroundColorInInstance { get; set; }
+        public bool? IncludeBackgroundColorInInstance { get; protected set; }
 
         [JsonProperty("overrideProperties", NullValueHandling = NullValueHandling.Ignore)]
-        public OverrideProperty[] OverrideProperties { get; set; }
+        public OverrideProperty[] OverrideProperties { get; protected set; }
 
         [JsonProperty("symbolID", NullValueHandling = NullValueHandling.Ignore)]
-        public string SymbolId { get; set; }
+        public string SymbolId { get; protected set; }
 
         [JsonProperty("horizontalSpacing", NullValueHandling = NullValueHandling.Ignore)]
-        public double? HorizontalSpacing { get; set; }
+        public double? HorizontalSpacing { get; protected set; }
 
         [JsonProperty("overrideValues", NullValueHandling = NullValueHandling.Ignore)]
-        public OverrideValue[] OverrideValues { get; set; }
+        public OverrideValue[] OverrideValues { get; protected set; }
 
         [JsonProperty("scale", NullValueHandling = NullValueHandling.Ignore)]
-        public double? Scale { get; set; }
+        public double? Scale { get; protected set; }
 
         [JsonProperty("verticalSpacing", NullValueHandling = NullValueHandling.Ignore)]
-        public double? VerticalSpacing { get; set; }
+        public double? VerticalSpacing { get; protected set; }
 
         [JsonProperty("clippingMask", NullValueHandling = NullValueHandling.Ignore)]
-        public string ClippingMask { get; set; }
+        public string ClippingMask { get; protected set; }
 
         [JsonProperty("fillReplacesImage", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? FillReplacesImage { get; set; }
+        public bool? FillReplacesImage { get; protected set; }
 
         [JsonProperty("image", NullValueHandling = NullValueHandling.Ignore)]
-        public ImageElement Image { get; set; }
+        public ImageElement Image { get; protected set; }
 
         [JsonProperty("intendedDPI", NullValueHandling = NullValueHandling.Ignore)]
-        public long? IntendedDpi { get; set; }
+        public long? IntendedDpi { get; protected set; }
     }
 
     public partial class LayerPresetDictionary
@@ -2047,25 +2047,25 @@ namespace SketchConverter.FileFormat
     public partial class UserValue
     {
         [JsonProperty("expandedSymbolPathsInSidebar", NullValueHandling = NullValueHandling.Ignore)]
-        public dynamic[] ExpandedSymbolPathsInSidebar { get; set; }
+        public dynamic[] ExpandedSymbolPathsInSidebar { get; protected set; }
 
         [JsonProperty("expandedTextStylePathsInPopover", NullValueHandling = NullValueHandling.Ignore)]
-        public dynamic[] ExpandedTextStylePathsInPopover { get; set; }
+        public dynamic[] ExpandedTextStylePathsInPopover { get; protected set; }
 
         [JsonProperty("libraryListCollapsed", NullValueHandling = NullValueHandling.Ignore)]
-        public long? LibraryListCollapsed { get; set; }
+        public long? LibraryListCollapsed { get; protected set; }
 
         [JsonProperty("pageListCollapsed", NullValueHandling = NullValueHandling.Ignore)]
-        public long? PageListCollapsed { get; set; }
+        public long? PageListCollapsed { get; protected set; }
 
         [JsonProperty("pageListHeight", NullValueHandling = NullValueHandling.Ignore)]
-        public long? PageListHeight { get; set; }
+        public long? PageListHeight { get; protected set; }
 
         [JsonProperty("scrollOrigin", NullValueHandling = NullValueHandling.Ignore)]
-        public string ScrollOrigin { get; set; }
+        public string ScrollOrigin { get; protected set; }
 
         [JsonProperty("zoomValue", NullValueHandling = NullValueHandling.Ignore)]
-        public double? ZoomValue { get; set; }
+        public double? ZoomValue { get; protected set; }
     }
 
     public partial class Workspace

@@ -26,6 +26,7 @@ namespace SketchConverter.FileFormat
     /// </summary>
     public partial class OriginalMasterLayer : ILayer
     {
+        public bool GetAllowsOverrides() => AllowsOverrides ?? true;
     }
 
     /// <summary>
@@ -33,6 +34,7 @@ namespace SketchConverter.FileFormat
     /// </summary>
     public partial class PageLayer : ILayer
     {
+        public bool GetAllowsOverrides() => AllowsOverrides ?? true;
     }
 
     /// <summary>
@@ -40,6 +42,7 @@ namespace SketchConverter.FileFormat
     /// </summary>
     public partial class SymbolSourceLayer : ILayer
     {
+        public bool GetAllowsOverrides() => AllowsOverrides;
     }
 
     /// <summary>
@@ -47,33 +50,35 @@ namespace SketchConverter.FileFormat
     /// </summary>
     public interface ILayer
     {
-        long BooleanOperation { get; set; }
-        dynamic Class { get; set; }
-        long? ClippingMaskMode { get; set; }
-        string DoObjectId { get; set; }
-        ExportOptions ExportOptions { get; set; }
-        FlowConnection Flow { get; set; }
-        Rect Frame { get; set; }
-        GroupLayout GroupLayout { get; set; }
-        bool? HasClippingMask { get; set; }
-        bool IsFixedToViewport { get; set; }
-        bool IsFlippedHorizontal { get; set; }
-        bool IsFlippedVertical { get; set; }
-        bool IsLocked { get; set; }
-        bool IsVisible { get; set; }
-        long LayerListExpandedType { get; set; }
-        OriginalMasterLayer[] Layers { get; set; }
-        bool? MaintainScrollPosition { get; set; }
-        string Name { get; set; }
-        bool NameIsFixed { get; set; }
-        long ResizingConstraint { get; set; }
-        long ResizingType { get; set; }
-        double Rotation { get; set; }
-        string SharedStyleId { get; set; }
-        bool ShouldBreakMaskChain { get; set; }
-        Style Style { get; set; }
-        string SymbolId { get; set; }
-        Dictionary<string, dynamic> UserInfo { get; set; }
+        long BooleanOperation { get; }
+        dynamic Class { get; }
+        long? ClippingMaskMode { get; }
+        string DoObjectId { get; }
+        ExportOptions ExportOptions { get; }
+        FlowConnection Flow { get; }
+        Rect Frame { get; }
+        GroupLayout GroupLayout { get; }
+        bool? HasClippingMask { get; }
+        bool IsFixedToViewport { get; }
+        bool IsFlippedHorizontal { get; }
+        bool IsFlippedVertical { get; }
+        bool IsLocked { get; }
+        bool IsVisible { get; }
+        long LayerListExpandedType { get; }
+        OriginalMasterLayer[] Layers { get; }
+        bool? MaintainScrollPosition { get; }
+        string Name { get; }
+        bool NameIsFixed { get; }
+        long ResizingConstraint { get; }
+        long ResizingType { get; }
+        double Rotation { get; }
+        string SharedStyleId { get; }
+        bool ShouldBreakMaskChain { get; }
+        Style Style { get; }
+        string SymbolId { get; }
+        Dictionary<string, dynamic> UserInfo { get; }
+        OverrideProperty[] OverrideProperties { get; }
+        bool GetAllowsOverrides();
     }
 
     /// <summary>
@@ -81,25 +86,61 @@ namespace SketchConverter.FileFormat
     /// </summary>
     public class ParsedOverrideValue
     {
-        public static string PropertyKeywordText = "stringValue";
-        public static string PropertyKeywordSymbol = "symbolID";
-        public static string PropertyKeywordImage = "image";
-        public static string PropertyKeywordLayerStyle = "layerStyle";
-        public static string PropertyKeywordTextStyle = "textStyle";
-        public static string PropertyKeywordFillColor = "fillColor";
+        public static readonly string PropertyKeywordText = "stringValue";
+        public static readonly string PropertyKeywordSymbol = "symbolID";
+        public static readonly string PropertyKeywordImage = "image";
+        public static readonly string PropertyKeywordLayerStyle = "layerStyle";
+        public static readonly string PropertyKeywordTextStyle = "textStyle";
+        public static readonly string PropertyKeywordFillColor = "fillColor";
 
         readonly OverrideValue overrideValue;
+
+        /// <summary>どのオブジェクトに対してオーバーライドするかを示すID</summary>
         public string OverrideObjectId { get; }
+
+        /// <summary>オーバーライド先のレイヤーに到達するまでのシンボルインスタンスID</summary>
+        public string[] OverrideSymbolIds { get; }
+
+        /// <summary>何をオーバーライドするのか示す文字列（stringValue, symbolID, fillColor, etc.）</summary>
         public string OverrideProperty { get; }
+
+        /// <summary>オーバーライド値</summary>
         public Value Value => overrideValue.Value;
+
+        /// <summary>素のオーバーライド情報文字列</summary>
+        public string OverrideName => overrideValue.OverrideName;
 
         public ParsedOverrideValue(OverrideValue value)
         {
             overrideValue = value;
-            var array1 = value.OverrideName.Split('/');
-            var array2 = array1.Last().Split('_');
-            OverrideObjectId = array2[0];
-            OverrideProperty = array2[1];
+
+            // OverrideName には「どのインスタンスシンボルの中の/どのレイヤーに対して_何をオーバーライドするのか」という形で入っている
+            // インスタンスシンボル内のインスタンスシンボルを指定するために、三階層以上になることもある
+            // 短い例: 4AB528C0-F897-4F6D-B591-EB4DE4B1D390_symbolID
+            // 長い例: 4AB528C0-F897-4F6D-B591-EB4DE4B1D390/866ED934-7423-4717-9D02-7C31E89E6DC9/5E2E8126-7ACB-407C-A3C1-061855E5C09E_symbolID
+            var array = overrideValue.OverrideName.Split('_');
+            var ids = array.First().Split('/');
+            OverrideSymbolIds = ids.Take(ids.Length - 1).ToArray(); // -1 = OverrideObjectId
+            OverrideObjectId = ids.Last();
+            OverrideProperty = array.Last();
+        }
+    }
+
+    /// <summary>
+    /// Parse 済みの Property 情報
+    /// </summary>
+    public class ParsedOverrideProperty
+    {
+        readonly OverrideProperty overrideProperty;
+
+        public string OverrideObjectPath { get; }
+        public bool CanOverride => overrideProperty.CanOverride;
+        public string OverrideName => overrideProperty.OverrideName;
+
+        public ParsedOverrideProperty(OverrideProperty property)
+        {
+            overrideProperty = property;
+            OverrideObjectPath = property.OverrideName.Split('_').First();
         }
     }
 
@@ -126,6 +167,21 @@ namespace SketchConverter.FileFormat
                    Math.Abs(a.Green - b.Green) < equalsPrecision &&
                    Math.Abs(a.Blue - b.Blue) < equalsPrecision &&
                    Math.Abs(a.Alpha - b.Alpha) < equalsPrecision;
+        }
+    }
+
+    public partial class Gradient
+    {
+        public (float x, float y) GetParsedTo() => Parse(To);
+        public (float x, float y) GetParsedFrom() => Parse(From);
+
+        /// <summary>
+        /// こんな形のテキストをパースする: "{0.49999999999999967, -2.4894981252573991e-17}"
+        /// </summary>
+        (float x, float y) Parse(string s)
+        {
+            var array = s.Substring(1, s.Length - 2).Split(',');
+            return (x: float.Parse(array[0]), y: float.Parse(array[1]));
         }
     }
 
@@ -246,7 +302,15 @@ namespace SketchConverter.FileFormat
         /// </summary>
         public static ParsedOverrideValue[] GetParsedOverrideValues(this OriginalMasterLayer layer)
         {
-            return layer?.OverrideValues.Select(x => new ParsedOverrideValue(x)).ToArray() ?? Enumerable.Empty<ParsedOverrideValue>().ToArray();
+            return layer?.OverrideValues.Select(x => new ParsedOverrideValue(x)).ToArray() ?? Array.Empty<ParsedOverrideValue>();
+        }
+
+        /// <summary>
+        /// パース済みの override 情報群を返す
+        /// </summary>
+        public static ParsedOverrideProperty[] GetParsedOverrideProperties(this ILayer layer)
+        {
+            return layer?.OverrideProperties?.Select(x => new ParsedOverrideProperty(x)).ToArray() ?? Array.Empty<ParsedOverrideProperty>();
         }
     }
 }

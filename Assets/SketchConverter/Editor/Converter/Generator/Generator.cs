@@ -15,6 +15,7 @@
  * with other software products is expressly forbidden.
  */
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using SketchConverter.FileFormat;
@@ -71,30 +72,35 @@ namespace SketchConverter
         /// <summary>
         /// 引数のレイヤーを起点に全てのレイヤーを走査し GameObject を生成する
         /// </summary>
-        protected virtual IEnumerable<IDecoratorEntry> GenerateDescendants(ILayerAdapter adapter, GameObject parent = null)
+        protected virtual IEnumerable<IDecoratorEntry> GenerateDescendants(ILayerAdapter layerAdapter, GameObject parentGameObject = null)
         {
-            if (!ShouldGenerateEntry(adapter))
-            {
-                yield break;
-            }
+            return Impl(layerAdapter, null, parentGameObject)?.TraverseDFS() ?? Array.Empty<IDecoratorEntry>();
 
-            var gameObject = GenerateGameObject(parent, adapter);
-            var currentEntry = new DecoratorEntry(gameObject, adapter);
-            yield return currentEntry;
-            if (!ShouldGenerateDescendants(currentEntry))
+            IDecoratorEntry Impl(ILayerAdapter adapter, DecoratorEntry parentEntry, GameObject parent = null)
             {
-                yield break;
-            }
-
-            if (!ShouldBreakingDescendants(currentEntry))
-            {
-                foreach (var childLayerAdapter in GetChildAdaptersShouldGenerated(adapter))
+                if (!ShouldGenerateEntry(adapter))
                 {
-                    foreach (var entry in GenerateDescendants(childLayerAdapter, gameObject))
+                    return null;
+                }
+
+                var gameObject = GenerateGameObject(parent, adapter);
+                var entry = new DecoratorEntry(gameObject, adapter, parentEntry);
+                if (!ShouldGenerateDescendants(entry))
+                {
+                    return null;
+                }
+
+                if (!ShouldBreakingDescendants(entry))
+                {
+                    foreach (var childLayerAdapter in GetChildAdaptersShouldGenerated(entry.Adapter))
                     {
-                        yield return entry;
+                        if (Impl(childLayerAdapter, entry, gameObject) is { } childEntry)
+                        {
+                            entry.AddChild(childEntry);
+                        }
                     }
                 }
+                return entry;
             }
         }
 
@@ -120,9 +126,12 @@ namespace SketchConverter
         {
             foreach (var entry in entries)
             {
-                foreach (var decorator in Decorators.Where(x => x.ShouldDecorate(entry)))
+                foreach (var decorator in Decorators)
                 {
-                    decorator.Decorate(entry);
+                    if (entry.GameObject != null && decorator.ShouldDecorate(entry))
+                    {
+                        decorator.Decorate(entry);
+                    }
                 }
             }
         }
@@ -134,9 +143,12 @@ namespace SketchConverter
         {
             foreach (var entry in entries)
             {
-                foreach (var decorator in Decorators.Where(x => x.ShouldDecorate(entry)))
+                foreach (var decorator in Decorators)
                 {
-                    decorator.DecorateAfter(entry);
+                    if (entry.GameObject != null && decorator.ShouldDecorate(entry))
+                    {
+                        decorator.DecorateAfter(entry);
+                    }
                 }
             }
         }
@@ -148,9 +160,12 @@ namespace SketchConverter
         {
             foreach (var entry in entries.AsEnumerable().Reverse())
             {
-                foreach (var decorator in Decorators.Where(x => x.ShouldDecorate(entry)))
+                foreach (var decorator in Decorators)
                 {
-                    decorator.DecorateReverse(entry);
+                    if (entry.GameObject != null && decorator.ShouldDecorate(entry))
+                    {
+                        decorator.DecorateReverse(entry);
+                    }
                 }
             }
         }
@@ -162,9 +177,12 @@ namespace SketchConverter
         {
             foreach (var entry in entries.AsEnumerable().Reverse())
             {
-                foreach (var decorator in Decorators.Where(x => x.ShouldDecorate(entry)))
+                foreach (var decorator in Decorators)
                 {
-                    decorator.DecorateReverseAfter(entry);
+                    if (entry.GameObject != null && decorator.ShouldDecorate(entry))
+                    {
+                        decorator.DecorateReverseAfter(entry);
+                    }
                 }
             }
         }

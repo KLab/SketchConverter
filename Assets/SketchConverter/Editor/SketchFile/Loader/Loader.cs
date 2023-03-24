@@ -16,6 +16,8 @@
  */
 
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace SketchConverter
 {
@@ -29,12 +31,20 @@ namespace SketchConverter
 
         /// <summary>
         /// .sketch を解析した情報が詰まった SketchFile クラスを返す
+        /// ※メインスレッド以外で実行しないでください
         /// </summary>
         /// <param name="path">.sketch ファイルのパス</param>
-        public static SketchFile LoadSketchFile(string path)
+        public static SketchFile LoadSketchFile(string path) => LoadSketchFileAsync(path, SynchronizationContext.Current).Result;
+
+        /// <summary>
+        /// .sketch を解析した情報が詰まった SketchFile クラスを非同期で返す
+        /// </summary>
+        /// <param name="path">.sketch ファイルのパス</param>
+        /// <param name="context">メインスレッド実行用</param>
+        public static async Task<SketchFile> LoadSketchFileAsync(string path, SynchronizationContext context, CancellationToken token = default)
         {
             var loader = SetupLoader();
-            var sketchFile = loader.Load(path);
+            var sketchFile = await loader.LoadAsync(path, context, token);
             return sketchFile;
         }
 

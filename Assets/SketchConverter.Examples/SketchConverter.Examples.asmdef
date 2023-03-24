@@ -2,7 +2,7 @@
     "name": "SketchConverter.Examples",
     "rootNamespace": "",
     "references": [
-        "SketchConverter"
+        "GUID:e747460647cc54fda816cc5944187129"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

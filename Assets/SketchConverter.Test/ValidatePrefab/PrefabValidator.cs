@@ -18,6 +18,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using NUnit.Framework;
 using SketchConverter;
 using SketchConverter.FileFormat;
 using UnityEditor;
@@ -37,15 +38,15 @@ public static class PrefabValidator
         {
             try
             {
-                Converter.GeneratePrefab(sketchFile, layer, TestPrefabPath);
-                var testPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(TestPrefabPath);
                 var pageName = layer.Name;
-                testPrefab.name = pageName;
                 if (!correctPrefabPaths.Contains(pageName))
                 {
                     continue;
                 }
 
+                Converter.GeneratePrefab(sketchFile, layer, TestPrefabPath);
+                var testPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(TestPrefabPath);
+                testPrefab.name = pageName;
                 var correctPrefab = AssetDatabase.LoadAssetAtPath<GameObject>($"{validateData.CorrectPrefabsDirectory}/{parameter.Name}/{pageName}.prefab");
                 GameObjectComparer.Test(testPrefab, correctPrefab);
             }
@@ -98,15 +99,27 @@ public static class PrefabValidator
 
             foreach (var data in dataList)
             {
-                foreach (var layer in layers)
+                foreach (var layer in layers.Where(layer => data.LayerNames.Contains(layer.Name)))
                 {
-                    foreach (var layerName in data.LayerNames)
+                    Converter.SetupDecorators = data.SetupDecorators;
+                    Converter.GeneratePrefab(sketchFile, layer, TestPrefabPath);
+                    var testPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(TestPrefabPath);
+                    testPrefab.name = layer.Name;
+                    var prefabPath = $"{validateData.CorrectPrefabsDirectory}/{data.Name}/{layer.Name}.prefab";
+                    var correctPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath);
+                    if (correctPrefab == null)
                     {
-                        if (layer.Name == layerName)
-                        {
-                            Converter.SetupDecorators = data.SetupDecorators;
-                            Converter.GeneratePrefab(sketchFile, layer, $"{validateData.CorrectPrefabsDirectory}/{data.Name}/{layer.Name}.prefab");
-                        }
+                        Converter.GeneratePrefab(sketchFile, layer, prefabPath);
+                        continue;
+                    }
+
+                    try
+                    {
+                        GameObjectComparer.Test(testPrefab, correctPrefab);
+                    }
+                    catch (AssertionException)
+                    {
+                        Converter.GeneratePrefab(sketchFile, layer, prefabPath);
                     }
                 }
             }
@@ -114,6 +127,10 @@ public static class PrefabValidator
         finally
         {
             Converter.SetupDecorators = Converter.DefaultSetupDecorator;
+            if (File.Exists(TestPrefabPath))
+            {
+                AssetDatabase.DeleteAsset(TestPrefabPath);
+            }
         }
     }
 }

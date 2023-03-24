@@ -68,11 +68,9 @@ namespace SketchConverter
             {
                 return;
             }
-            using (var reader = new StreamReader(settingFilePath, Encoding.UTF8))
-            {
-                var json = reader.ReadToEnd();
-                EditorJsonUtility.FromJsonOverwrite(json, Data);
-            }
+            using var reader = new StreamReader(settingFilePath, Encoding.UTF8);
+            var json = reader.ReadToEnd();
+            EditorJsonUtility.FromJsonOverwrite(json, Data);
         }
 
         /// <summary>

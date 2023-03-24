@@ -15,6 +15,7 @@
  * with other software products is expressly forbidden.
  */
 
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace SketchConverter
@@ -29,6 +30,15 @@ namespace SketchConverter
 
         /// <summary>装飾先となるGameObject</summary>
         GameObject GameObject { get; }
+
+        /// <summary>親要素</summary>
+        IDecoratorEntry Parent { get; }
+
+        /// <summary>子要素</summary>
+        IReadOnlyList<IDecoratorEntry> Children { get; }
+
+        /// <summary>深さ優先探索結果を返す</summary>
+        IEnumerable<IDecoratorEntry> TraverseDFS();
     }
 
     /// <inheritdoc/>
@@ -40,13 +50,44 @@ namespace SketchConverter
         /// <inheritdoc/>
         public ILayerAdapter Adapter { get; }
 
+        /// <inheritdoc/>
+        public IDecoratorEntry Parent { get; }
+
+        /// <inheritdoc/>
+        public IReadOnlyList<IDecoratorEntry> Children => children;
+
+        /// <summary>子要素</summary>
+        protected readonly List<IDecoratorEntry> children = new List<IDecoratorEntry>();
+
         /// <summary>
         /// コンストラクタ
         /// </summary>
-        public DecoratorEntry(GameObject gameObject, ILayerAdapter adapter)
+        public DecoratorEntry(GameObject gameObject, ILayerAdapter adapter, IDecoratorEntry parent = null)
         {
+            Parent = parent;
             GameObject = gameObject;
             Adapter = adapter;
+        }
+
+        /// <summary>子の追加</summary>
+        public virtual void AddChild(IDecoratorEntry entry) => children.Add(entry);
+
+        /// <inheritdoc/>
+        public virtual IEnumerable<IDecoratorEntry> TraverseDFS()
+        {
+            return PreOrder(this);
+
+            static IEnumerable<IDecoratorEntry> PreOrder(IDecoratorEntry entry)
+            {
+                yield return entry;
+                foreach (var child in entry.Children)
+                {
+                    foreach (var c in PreOrder(child))
+                    {
+                        yield return c;
+                    }
+                }
+            }
         }
     }
 }

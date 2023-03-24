@@ -22,6 +22,7 @@
 
 using System;
 using System.Runtime.InteropServices;
+using SketchConverter.Newtonsoft.Json;
 
 namespace SketchConverter.FileFormat
 {
@@ -188,5 +189,14 @@ namespace SketchConverter.FileFormat
     {
         public Color Color;
         public static implicit operator Value(Color Color) => new Value {Color = Color};
+    }
+
+    public partial class OriginalMasterLayer
+    {
+        [JsonProperty("allowsOverrides", NullValueHandling = NullValueHandling.Ignore)]
+        public bool? AllowsOverrides { get; set; }
+
+        [JsonProperty("overrideProperties", NullValueHandling = NullValueHandling.Ignore)]
+        public OverrideProperty[] OverrideProperties { get; set; }
     }
 }

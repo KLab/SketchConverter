@@ -15,6 +15,7 @@
  * with other software products is expressly forbidden.
  */
 
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using SketchConverter.FileFormat;
@@ -46,7 +47,7 @@ namespace SketchConverter
         /// </summary>
         public string ToHierarchyString()
         {
-            void AppendLayersInfo(StringBuilder sb, ILayer[] layers, int nested = 0)
+            void AppendLayersInfo(StringBuilder sb, IEnumerable<ILayer> layers, int nested = 0)
             {
                 foreach (var layer in layers ?? Enumerable.Empty<ILayer>())
                 {

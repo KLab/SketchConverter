@@ -33,6 +33,9 @@ namespace SketchConverter
         /// <summary>素のレイヤー情報。基本的には OriginalMasterLayer 型だが PageLayer 型の場合もある。</summary>
         ILayer Layer { get; }
 
+        /// <summary>子のレイヤー情報</summary>
+        OriginalMasterLayer[] Layers { get; }
+
         /// <summary>素のオリジナルのシンボルレイヤー情報。対象のレイヤーがシンボルインスタンスでない場合は null です</summary>
         ILayer SymbolLayer { get; }
 
@@ -99,9 +102,11 @@ namespace SketchConverter
                         .Where(x => x.Class == ClassText.Fill)
                         .Where(x => x.IsEnabled)
                         .Select(x => x.Color)
-                        .ToArray() ?? new Color[0];
+                        .ToArray() ?? Array.Empty<Color>();
                 }
-                return new[] {overrideValue.Value.Color};
+                // レイヤーに Fills 設定が存在しない場合はオーバーライド情報を適用するべきではない
+                var hasFills = LayerStyle?.Fills?.Where(x => x.Class == ClassText.Fill).Any(x => x.IsEnabled) ?? false;
+                return hasFills ? new[] {overrideValue.Value.Color} : Array.Empty<Color>();
             }
         }
 
@@ -111,7 +116,8 @@ namespace SketchConverter
             get
             {
                 var overrideValue = GetOverrideValue(ParsedOverrideValue.PropertyKeywordLayerStyle);
-                if (overrideValue == null)
+                var shouldAvoidOverride = string.IsNullOrEmpty(Layer.SharedStyleId);
+                if (overrideValue == null || shouldAvoidOverride)
                 {
                     return Layer.Style;
                 }
@@ -128,7 +134,8 @@ namespace SketchConverter
             get
             {
                 var overrideValue = GetOverrideValue(ParsedOverrideValue.PropertyKeywordTextStyle);
-                if (overrideValue == null)
+                var shouldAvoidOverride = string.IsNullOrEmpty(Layer.SharedStyleId);
+                if (overrideValue == null || shouldAvoidOverride)
                 {
                     return LayerStyle?.TextStyle;
                 }
@@ -139,46 +146,18 @@ namespace SketchConverter
             }
         }
 
-        /// <summary>継承しているオーバーライド情報</summary>
+        /// <summary>このクラスが管理するレイヤーに有効なオーバーライド情報</summary>
         ParsedOverrideValue[] OverrideValues { get; }
 
-        /// <summary>このクラスが管理するレイヤーに有効なオーバーライド情報</summary>
-        ParsedOverrideValue[] AvailableOverrideValues { get; }
-
         /// <summary>
         /// コンストラクタ
         /// </summary>
-        [Obsolete("To be deleted.")]
-        public LayerAdapter(Adapter adapter, ILayer layer, ILayer symbolLayer, ParsedOverrideValue[] overrideValues)
+        public LayerAdapter(Adapter adapter, ILayer layer, IOverrideValueAdapter[] overrideValues)
         {
             Adapter = adapter;
             Layer = layer;
-            SymbolLayer = symbolLayer;
-            OverrideValues = overrideValues;
-            if (Layer is OriginalMasterLayer originalLayer)
-            {
-                AvailableOverrideValues = OverrideValues
-                    .Where(x => x.OverrideObjectId == originalLayer.DoObjectId || x.OverrideObjectId == symbolLayer?.DoObjectId)
-                    .Reverse()
-                    .ToArray();
-            }
-        }
-
-        /// <summary>
-        /// コンストラクタ
-        /// </summary>
-        public LayerAdapter(Adapter adapter, ILayer layer, ParsedOverrideValue[] overrideValues, Func<string, ILayer> getSymbol)
-        {
-            Adapter = adapter;
-            Layer = layer;
-            OverrideValues = overrideValues;
-            var overrideSymbolValue = OverrideValues.Reverse().FirstOrDefault(x =>
-                x.OverrideObjectId == layer.DoObjectId && x.OverrideProperty == ParsedOverrideValue.PropertyKeywordSymbol);
-            SymbolLayer = getSymbol(overrideSymbolValue != null ? overrideSymbolValue.Value.String : Layer.SymbolId);
-            AvailableOverrideValues = OverrideValues
-                .Where(x => x.OverrideObjectId == layer.DoObjectId || x.OverrideObjectId == SymbolLayer?.DoObjectId)
-                .Reverse()
-                .ToArray();
+            SymbolLayer = adapter.GetSymbol(layer, overrideValues);
+            OverrideValues = overrideValues.Where(x => x.CanOverride(layer)).Select(x => x.OverrideValue).ToArray();
         }
 
         /// <summary>
@@ -186,7 +165,7 @@ namespace SketchConverter
         /// </summary>
         protected ParsedOverrideValue GetOverrideValue(string keyword)
         {
-            foreach (var value in AvailableOverrideValues)
+            foreach (var value in OverrideValues)
             {
                 if (value.OverrideProperty == keyword)
                 {

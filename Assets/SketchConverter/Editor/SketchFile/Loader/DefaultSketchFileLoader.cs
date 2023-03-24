@@ -18,6 +18,8 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using SketchConverter.FileFormat;
 using SketchConverter.ICSharpCode.SharpZipLib.Zip;
 using SketchConverter.Newtonsoft.Json;
@@ -33,14 +35,14 @@ namespace SketchConverter
         protected virtual string UnzippedDirectory { get; set; }
 
         /// <inheritdoc/>
-        public virtual SketchFile Load(string filePath)
+        public virtual async Task<SketchFile> LoadAsync(string filePath, SynchronizationContext context, CancellationToken token)
         {
             UnzippedDirectory = SketchFilePathToUnzipDirectory(filePath);
             UnzipSketchFile(filePath);
             var sketchFile = AnalyzeSketchFile();
             AnalyzeSketchFilePostprocess(sketchFile);
-            DeleteUnzippedSketchFile();
-            return sketchFile;
+            context.Send(_ => DeleteUnzippedSketchFile(), null);
+            return await Task.FromResult(sketchFile);
         }
 
         /// <summary>
@@ -82,6 +84,11 @@ namespace SketchConverter
         /// </summary>
         protected virtual void DeleteUnzippedSketchFile()
         {
+            if (File.Exists($"{UnzippedDirectory}.meta"))
+            {
+                File.Delete($"{UnzippedDirectory}.meta");
+            }
+
             if (Directory.Exists(UnzippedDirectory))
             {
                 Directory.Delete(UnzippedDirectory, true);

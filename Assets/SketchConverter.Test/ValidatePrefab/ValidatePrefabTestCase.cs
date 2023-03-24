@@ -40,6 +40,7 @@ public class ValidatePrefabTestCase
                 "sprites",
                 "colors",
                 "symbols",
+                "override",
             },
             SetupDecorators = Converter.DefaultSetupDecorator,
         },
@@ -77,6 +78,26 @@ public class ValidatePrefabTestCase
                 generator.Decorators.Add(new ButtonDecorator());
             },
         },
+        new ValidateTarget
+        {
+            Name = "MaskDecorator",
+            LayerNames = new[] {"mask"},
+            SetupDecorators = generator =>
+            {
+                Converter.DefaultSetupDecorator(generator);
+                generator.Decorators.Add(new MaskDecorator());
+            },
+        },
+        new ValidateTarget
+        {
+            Name = "DestroyDecorator",
+            LayerNames = new[] {"text-library"},
+            SetupDecorators = generator =>
+            {
+                Converter.DefaultSetupDecorator(generator);
+                generator.Decorators.Add(new DestroyDecorator());
+            },
+        },
     };
 
     public void Test(ValidateTarget target) => PrefabValidator.Validate(PrefabValidator.GetValidateData(ValidateDataName), target);
@@ -107,10 +128,22 @@ public class ValidatePrefabTestCase
         Test(GetTarget("ButtonDecorator"));
     }
 
+    [Test]
+    public void MaskDecoratorPasses()
+    {
+        Test(GetTarget("MaskDecorator"));
+    }
+
+    [Test]
+    public void DestroyDecoratorPasses()
+    {
+        Test(GetTarget("DestroyDecorator"));
+    }
+
     /// <summary>
     /// テスト時に比較するPrefabの自動生成
     /// </summary>
-    [MenuItem("Window/SketchConverter.Test/GenerateCorrectPrefabs")]
+    [MenuItem("SketchConverter/Test/GenerateCorrectPrefabs")]
     public static void GenerateCorrectPrefabs()
     {
         PrefabValidator.GenerateCorrectPrefabs(PrefabValidator.GetValidateData(ValidateDataName), cases);

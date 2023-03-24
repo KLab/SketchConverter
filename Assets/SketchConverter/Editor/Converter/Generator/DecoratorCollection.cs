@@ -99,19 +99,17 @@ namespace SketchConverter
         /// </summary>
         protected virtual int FirstIndex<T>(IEnumerable<T> enumerable, Predicate<T> match)
         {
-            using (var enumerator = enumerable.GetEnumerator())
+            using var enumerator = enumerable.GetEnumerator();
+            var index = 0;
+            while (enumerator.MoveNext())
             {
-                var index = 0;
-                while (enumerator.MoveNext())
+                if (match(enumerator.Current))
                 {
-                    if (match(enumerator.Current))
-                    {
-                        return index;
-                    }
-                    index++;
+                    return index;
                 }
-                return -1;
+                index++;
             }
+            return -1;
         }
 
         /// <summary>

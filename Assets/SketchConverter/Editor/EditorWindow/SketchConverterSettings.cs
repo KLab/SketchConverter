@@ -131,11 +131,11 @@ namespace SketchConverter
         /// </summary>
         static FontInfo DefaultFontInfo
         {
-            get => defaultFontInfo ?? (defaultFontInfo = new FontInfo
+            get => defaultFontInfo ??= new FontInfo
             {
                 Font = Resources.GetBuiltinResource<Font>("Arial.ttf"),
                 LineRate = 1.117f,
-            });
+            };
             set => defaultFontInfo = value;
         }
 
@@ -166,7 +166,7 @@ namespace SketchConverter
         public static FontInfo FindUnityFontBySketchFontInfo(string fontName)
         {
             var settings = saveableFile.Data.FontRelations.FirstOrDefault(x => x.GetSketchFont() == fontName);
-            if (settings != null && settings.IsValid)
+            if (settings is {IsValid: true})
             {
                 return new FontInfo
                 {

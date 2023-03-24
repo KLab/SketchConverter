@@ -19,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using SketchConverter.FileFormat;
 using UnityEditor;
 using UnityEngine;
@@ -59,16 +60,13 @@ namespace SketchConverter
         {
             var image = entry.GameObject.AddComponent<Image>();
             var path = GetSpritePath(entry.Adapter);
-            var sprite = AssetDatabase.LoadAssetAtPath<Sprite>(path);
+            var sprite = GetSprite(path);
             if (sprite != null)
             {
                 image.sprite = sprite;
-                image.type = sprite.border == Vector4.zero ? Image.Type.Simple : Image.Type.Sliced;
+                image.type = GetImageType(entry, sprite);
+                image.color = GetColor(entry);
             }
-
-            var color = LayerToFillColor(entry.Adapter);
-            color.a *= (float) (entry.Adapter.LayerStyle?.ContextSettings.Opacity ?? 1);
-            image.color = color;
         }
 
         /// <summary>
@@ -85,6 +83,61 @@ namespace SketchConverter
                 return symbolInstanceName;
             }
             return null;
+        }
+
+        /// <summary>
+        /// 適用するスプライトを返す
+        /// </summary>
+        protected virtual Sprite GetSprite(string path) => AssetDatabase.LoadAssetAtPath<Sprite>(path);
+
+        /// <summary>
+        /// Image コンポーネントの Fill に関するタイプを返す
+        /// </summary>
+        protected virtual Image.Type GetImageType(IDecoratorEntry entry, Sprite sprite)
+        {
+            if (ShouldTiled(entry))
+            {
+                return Image.Type.Tiled;
+            }
+            if (sprite.border == Vector4.zero)
+            {
+                return Image.Type.Simple;
+            }
+            return Image.Type.Sliced;
+        }
+
+        /// <summary>
+        /// タイル設定にすべきかを返す
+        /// </summary>
+        protected virtual bool ShouldTiled(IDecoratorEntry entry)
+        {
+            return GetAllLayerAdapters(entry.Adapter)
+                .Any(x => GetPatternFills(x)?.Any() ?? false);
+
+            IEnumerable<Fill> GetPatternFills(ILayerAdapter adapter) => adapter.LayerStyle?.Fills.Where(x =>
+                x.IsEnabled && x.FillTypeEnum == FillType.Pattern && x.PatternFillTypeEnum == PatternFillType.Tile);
+
+            IEnumerable<ILayerAdapter> GetAllLayerAdapters(ILayerAdapter root)
+            {
+                yield return root;
+                foreach (var a in root.LayerAdapters)
+                {
+                    foreach (var b in GetAllLayerAdapters(a))
+                    {
+                        yield return b;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Imageのカラーを返す
+        /// </summary>
+        protected virtual Color GetColor(IDecoratorEntry entry)
+        {
+            var color = LayerToFillColor(entry.Adapter);
+            color.a *= (float) (entry.Adapter.LayerStyle?.ContextSettings.Opacity ?? 1);
+            return color;
         }
 
         /// <summary>
@@ -129,9 +182,14 @@ namespace SketchConverter
                 foreach (var assetPath in assetPaths)
                 {
                     var filePath = WithoutExtension(assetPath).Remove(0, rootPath.Length + separator.Length);
-                    var fileName = Path.GetFileNameWithoutExtension(assetPath);
-                    IfNeededAdd(dictionary, filePath, assetPath);
-                    IfNeededAdd(dictionary, fileName, assetPath);
+                    var names = filePath.Split(separator[0]);
+                    var key = new StringBuilder();
+                    foreach (var name in names.Reverse())
+                    {
+                        key.Insert(0, name);
+                        IfNeededAdd(dictionary, key.ToString(), assetPath);
+                        key.Insert(0, separator);
+                    }
                 }
             }
             return dictionary;
