@@ -58,7 +58,7 @@ namespace SketchConverter
         /// <inheritdoc/>
         public override void Decorate(IDecoratorEntry entry)
         {
-            var image = entry.GameObject.AddComponent<Image>();
+            var image = ObjectFactory.AddComponent<Image>(entry.GameObject);
             var path = GetSpritePath(entry.Adapter);
             var sprite = GetSprite(path);
             if (sprite != null)
@@ -172,11 +172,11 @@ namespace SketchConverter
             var rootPaths = SketchConverterSettings.GetTextureDirectoryPaths();
             if (rootPaths.Length == 0)
             {
-                rootPaths = new[] {"Assets"};
+                rootPaths = new[] { "Assets" };
             }
             foreach (var rootPath in rootPaths)
             {
-                var assetPaths = AssetDatabase.FindAssets(filter, new[] {rootPath})
+                var assetPaths = AssetDatabase.FindAssets(filter, new[] { rootPath })
                     .Select(AssetDatabase.GUIDToAssetPath)
                     .ToArray();
                 foreach (var assetPath in assetPaths)

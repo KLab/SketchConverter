@@ -15,8 +15,8 @@
  * with other software products is expressly forbidden.
  */
 
+using System;
 using UnityEngine;
-using static UnityEngine.Mathf;
 
 namespace SketchConverter
 {
@@ -53,10 +53,78 @@ namespace SketchConverter
                 max.y = 0.5f;
             }
             SetAnchorLikeEditor(transform, min, max);
-            var pos = transform.anchoredPosition;
-            pos.x = Round(pos.x);
-            pos.y = Round(pos.y);
-            transform.anchoredPosition = pos;
+            RoundRectTransform(transform);
+        }
+
+        protected static bool Approximately(float a, float b) => Mathf.Abs(a - b) < 0.001f;
+
+        protected virtual void RoundRectTransform(RectTransform transform)
+        {
+            // 1度別の値にしないと端数がでてしまう
+            var swapVector2 = Vector2.zero;
+            var swapVector3 = Vector3.zero;
+
+            var anchoredPosition = transform.anchoredPosition;
+            transform.anchoredPosition = swapVector2;
+            transform.anchoredPosition = Round(anchoredPosition, 0);
+
+            var anchorMin = transform.anchorMin;
+            transform.anchorMin = swapVector2;
+            transform.anchorMin = Round(anchorMin, 2);
+
+            var anchorMax = transform.anchorMax;
+            transform.anchorMax = swapVector2;
+            transform.anchorMax = Round(anchorMax, 2);
+
+            var sizeDelta = transform.sizeDelta;
+            transform.sizeDelta = swapVector2;
+            transform.sizeDelta = Round(sizeDelta, 0);
+
+            var localScale = transform.localScale;
+            transform.localScale = swapVector3;
+            transform.localScale = Round(localScale, 2);
+
+            transform.anchoredPosition = GetRoundedAnchoredPositionForInspector(transform);
+        }
+
+        protected virtual float Round(float value, int digits) => (float) Math.Round(value, digits, MidpointRounding.ToEven);
+
+        protected virtual Vector2 Round(Vector2 value, int digits)
+        {
+            value.x = Round(value.x, digits);
+            value.y = Round(value.y, digits);
+            return value;
+        }
+
+        protected virtual Vector3 Round(Vector3 value, int digits)
+        {
+            value.x = Round(value.x, digits);
+            value.y = Round(value.y, digits);
+            value.z = Round(value.z, digits);
+            return value;
+        }
+
+        protected virtual Vector2 GetRoundedAnchoredPositionForInspector(RectTransform transform)
+        {
+            var sizeDelta = transform.sizeDelta;
+            var anchoredPosition = transform.anchoredPosition;
+            var anchorMin = transform.anchorMin;
+            var anchorMax = transform.anchorMax;
+
+            var x = CleanPosition(sizeDelta.x, anchoredPosition.x, anchorMin.x, anchorMax.x);
+            var y = CleanPosition(sizeDelta.y, anchoredPosition.y, anchorMin.y, anchorMax.y);
+            return new Vector2(x, y);
+
+            static float CleanPosition(float size, float pos, float anchorMin, float anchorMax)
+            {
+                if (!Approximately(size % 2.0f, 0.0f) &&
+                    Approximately(anchorMin, 0.0f) &&
+                    Approximately(anchorMax, 1.0f))
+                {
+                    return pos + (pos < 0 ? 0.5f : -0.5f);
+                }
+                return pos;
+            }
         }
     }
 }

@@ -89,7 +89,7 @@ namespace SketchConverter
             {
                 return;
             }
-            var currentName = $"{string.Join("/", OverrideValue.OverrideSymbolIds.Skip(traceIndex).Concat(new[] {lastId}).ToArray())}_{OverrideProperty}";
+            var currentName = $"{string.Join("/", OverrideValue.OverrideSymbolIds.Skip(traceIndex).Concat(new[] { lastId }).ToArray())}_{OverrideProperty}";
             if (properties.Any(x => x.OverrideName == currentName && x.CanOverride == false))
             {
                 IsInvalid = true;

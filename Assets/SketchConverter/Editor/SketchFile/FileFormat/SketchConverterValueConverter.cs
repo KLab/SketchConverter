@@ -35,7 +35,7 @@ namespace SketchConverter.FileFormat
                 case JsonToken.String:
                 case JsonToken.Date:
                     var stringValue = serializer.Deserialize<string>(reader);
-                    return new Value {String = stringValue};
+                    return new Value { String = stringValue };
                 case JsonToken.StartObject:
                     var jObject = JObject.Load(reader);
                     var type = (string) jObject.Property("_class");
@@ -43,13 +43,13 @@ namespace SketchConverter.FileFormat
                     {
                         var obj = new Color();
                         serializer.Populate(jObject.CreateReader(), obj);
-                        return new Value {Color = obj};
+                        return new Value { Color = obj };
                     }
                     else
                     {
                         var obj = new Reference();
                         serializer.Populate(jObject.CreateReader(), obj);
-                        return new Value {Reference = obj};
+                        return new Value { Reference = obj };
                     }
             }
             throw new Exception("Cannot unmarshal type Value");

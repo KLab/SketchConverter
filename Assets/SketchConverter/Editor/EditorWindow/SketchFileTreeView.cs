@@ -160,7 +160,7 @@ namespace SketchConverter
         /// </summary>
         public void ResetPosition()
         {
-            state.selectedIDs = new List<int> {0};
+            state.selectedIDs = new List<int> { 0 };
         }
     }
 }

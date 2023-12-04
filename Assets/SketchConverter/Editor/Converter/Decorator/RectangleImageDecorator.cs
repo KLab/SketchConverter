@@ -17,6 +17,7 @@
 
 using System.Linq;
 using SketchConverter.FileFormat;
+using UnityEditor;
 using UnityEngine.UI;
 using Color = UnityEngine.Color;
 
@@ -38,7 +39,7 @@ namespace SketchConverter
         /// <inheritdoc/>
         public override void Decorate(IDecoratorEntry entry)
         {
-            var image = entry.GameObject.AddComponent<Image>();
+            var image = ObjectFactory.AddComponent<Image>(entry.GameObject);
             var color = entry.Adapter.AvailableFillColors
                 .Select(x => x.ToUnityColor())
                 .Aggregate(Blend);

@@ -17,6 +17,7 @@
 
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace SketchConverter
 {
@@ -36,9 +37,16 @@ namespace SketchConverter
         {
             if (!entry.Adapter.Layer.IsVisible)
             {
-                entry.GameObject.SetActive(false);
+                if (entry.Adapter.Layer.HasClippingMask != true)
+                {
+                    entry.GameObject.SetActive(false);
+                }
+                else if (entry.GameObject.TryGetComponent<Graphic>(out var graphic))
+                {
+                    graphic.enabled = false;
+                }
             }
-            else if (entry.GameObject.GetComponentsInChildren<Component>().All(x => x == x.transform))
+            else if (entry.GameObject.GetComponentsInChildren<Component>().All(x => !(x is Graphic)))
             {
                 entry.GameObject.SetActive(false);
             }

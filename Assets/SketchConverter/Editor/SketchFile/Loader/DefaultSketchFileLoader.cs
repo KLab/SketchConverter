@@ -109,7 +109,7 @@ namespace SketchConverter
             {
                 MetadataPropertyHandling = MetadataPropertyHandling.Ignore,
                 DateParseHandling = DateParseHandling.None,
-                Converters = {SketchConverterValueConverter.Singleton},
+                Converters = { SketchConverterValueConverter.Singleton },
             };
             var document = JsonConvert.DeserializeObject<DocumentClass>(File.ReadAllText($"{UnzippedDirectory}/document.json"), settings);
             var pages = document.Pages

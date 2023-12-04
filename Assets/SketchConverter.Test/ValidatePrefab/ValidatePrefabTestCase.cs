@@ -20,6 +20,7 @@ using NUnit.Framework;
 using SketchConverter;
 using SketchConverter.Examples;
 using UnityEditor;
+using UnityEditor.Presets;
 
 public class ValidatePrefabTestCase
 {
@@ -42,7 +43,6 @@ public class ValidatePrefabTestCase
                 "symbols",
                 "override",
             },
-            SetupDecorators = Converter.DefaultSetupDecorator,
         },
         new ValidateTarget
         {
@@ -61,7 +61,7 @@ public class ValidatePrefabTestCase
         new ValidateTarget
         {
             Name = "CleanAnchorDecorator",
-            LayerNames = new[] {"anchor"},
+            LayerNames = new[] { "anchor" },
             SetupDecorators = generator =>
             {
                 Converter.DefaultSetupDecorator(generator);
@@ -71,7 +71,7 @@ public class ValidatePrefabTestCase
         new ValidateTarget
         {
             Name = "ButtonDecorator",
-            LayerNames = new[] {"text-library"},
+            LayerNames = new[] { "text-library" },
             SetupDecorators = generator =>
             {
                 Converter.DefaultSetupDecorator(generator);
@@ -81,7 +81,11 @@ public class ValidatePrefabTestCase
         new ValidateTarget
         {
             Name = "MaskDecorator",
-            LayerNames = new[] {"mask"},
+            LayerNames = new[]
+            {
+                "mask",
+                "layers"
+            },
             SetupDecorators = generator =>
             {
                 Converter.DefaultSetupDecorator(generator);
@@ -91,18 +95,41 @@ public class ValidatePrefabTestCase
         new ValidateTarget
         {
             Name = "DestroyDecorator",
-            LayerNames = new[] {"text-library"},
+            LayerNames = new[] { "text-library" },
             SetupDecorators = generator =>
             {
                 Converter.DefaultSetupDecorator(generator);
                 generator.Decorators.Add(new DestroyDecorator());
             },
         },
+        new ValidateTarget
+        {
+            Name = "DefaultPreset",
+            LayerNames = new[] { "sprites" },
+            SetupDecorators = generator =>
+            {
+                Converter.DefaultSetupDecorator(generator);
+            },
+            Setup = () =>
+            {
+                var preset = AssetDatabase.LoadAssetAtPath<Preset>("Assets/SketchConverter.Test/ValidatePrefab/ValidateDefaultImage.preset");
+                var type = preset.GetPresetType();
+                var presets = Preset.GetDefaultPresetsForType(type)
+                    .Prepend(new DefaultPreset(string.Empty, preset))
+                    .ToArray();
+                Preset.SetDefaultPresetsForType(type, presets);
+            },
+            TearDown = () =>
+            {
+                var preset = AssetDatabase.LoadAssetAtPath<Preset>("Assets/SketchConverter.Test/ValidatePrefab/ValidateDefaultImage.preset");
+                Preset.RemoveFromDefault(preset);
+            },
+        },
     };
 
-    public void Test(ValidateTarget target) => PrefabValidator.Validate(PrefabValidator.GetValidateData(ValidateDataName), target);
+    void Test(ValidateTarget target) => PrefabValidator.Validate(PrefabValidator.GetValidateData(ValidateDataName), target);
 
-    public ValidateTarget GetTarget(string name) => cases.First(x => x.Name == name);
+    ValidateTarget GetTarget(string name) => cases.First(x => x.Name == name);
 
     [Test]
     public void DefaultDecoratorPasses()
@@ -138,6 +165,12 @@ public class ValidatePrefabTestCase
     public void DestroyDecoratorPasses()
     {
         Test(GetTarget("DestroyDecorator"));
+    }
+
+    [Test]
+    public void DefaultPresetPasses()
+    {
+        Test(GetTarget("DefaultPreset"));
     }
 
     /// <summary>

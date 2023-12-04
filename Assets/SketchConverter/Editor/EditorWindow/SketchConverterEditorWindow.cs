@@ -49,13 +49,13 @@ namespace SketchConverter
 
             static Constants()
             {
-                background = new GUIStyle("Box") {padding = new RectOffset(8, 8, 8, 8)};
-                button = new GUIStyle("Button") {padding = new RectOffset(0, 0, 8, 8)};
-                padding = new GUIStyle {padding = new RectOffset(8, 8, 8, 8)};
+                background = new GUIStyle("Box") { padding = new RectOffset(8, 8, 8, 8) };
+                button = new GUIStyle("Button") { padding = new RectOffset(0, 0, 8, 8) };
+                padding = new GUIStyle { padding = new RectOffset(8, 8, 8, 8) };
                 textureIconSetting = EditorGUIUtility.IconContent("SettingsIcon").image as Texture2D;
-                wordWrapLabel = new GUIStyle(EditorStyles.label) {wordWrap = true};
-                wordWrapMiniLabel = new GUIStyle(EditorStyles.miniLabel) {wordWrap = true};
-                dragAndDropButton = new GUIStyle("Button") {padding = new RectOffset(0, 0, 15, 15)};
+                wordWrapLabel = new GUIStyle(EditorStyles.label) { wordWrap = true };
+                wordWrapMiniLabel = new GUIStyle(EditorStyles.miniLabel) { wordWrap = true };
+                dragAndDropButton = new GUIStyle("Button") { padding = new RectOffset(0, 0, 15, 15) };
                 settingButton = EditorStyles.toolbarButton;
             }
         }

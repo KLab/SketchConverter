@@ -16,6 +16,7 @@
  */
 
 using System.Linq;
+using UnityEditor;
 using UnityEngine.UI;
 
 namespace SketchConverter
@@ -31,7 +32,7 @@ namespace SketchConverter
         /// <inheritdoc/>
         public override void DecorateReverseAfter(IDecoratorEntry entry)
         {
-            var mask = entry.GameObject.AddComponent<RectMask2D>();
+            var mask = ObjectFactory.AddComponent<RectMask2D>(entry.GameObject);
             var targets = entry.Parent.Children
                 .SkipWhile(x => x != entry)
                 .Skip(1)
@@ -39,7 +40,15 @@ namespace SketchConverter
                 .ToArray();
             foreach (var target in targets)
             {
-                target.GameObject.transform.SetParent(mask.transform);
+                if (target.GameObject != null)
+                {
+                    target.GameObject.transform.SetParent(mask.transform);
+                }
+            }
+
+            if (entry.GameObject.TryGetComponent<Graphic>(out var graphic))
+            {
+                graphic.enabled = entry.Adapter.Layer.IsVisible;
             }
         }
     }

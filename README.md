@@ -22,12 +22,11 @@ SketchConverterは、Sketchファイルから GameObject を生成するツー�
 ## Installation
 #### UPM Package
 - git URL
-  - `https://github.com/KLab/SketchConverter.git?path=Assets/SketchConverter#3.0.0`
+  - `https://github.com/KLab/SketchConverter.git?path=Assets/SketchConverter#3.2.0`
 
 ## Target Environment
-- Unity 2020 LTS or later
-- .NET 4.x or later
-- Sketch v70 or later
+- Unity 2022 LTS or later
+- Sketch v85.1 or later
 
 ## Usage
 #### Convert

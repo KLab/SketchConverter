@@ -54,6 +54,9 @@ namespace SketchConverter
         /// <summary>オーバーライド情報を解決した Layer.Style.TextStyle</summary>
         TextStyle LayerStyleTextStyle { get; }
 
+        /// <summary>オーバーライド情報を解決した Layer.SharedStyleId</summary>
+        string SharedStyleId { get; }
+
         /// <summary>オーバーライド情報を解決した Layer.Style の Fill Color で有効な色の配列</summary>
         Color[] AvailableFillColors { get; }
     }
@@ -106,7 +109,7 @@ namespace SketchConverter
                 }
                 // レイヤーに Fills 設定が存在しない場合はオーバーライド情報を適用するべきではない
                 var hasFills = LayerStyle?.Fills?.Where(x => x.Class == ClassText.Fill).Any(x => x.IsEnabled) ?? false;
-                return hasFills ? new[] {overrideValue.Value.Color} : Array.Empty<Color>();
+                return hasFills ? new[] { overrideValue.Value.Color } : Array.Empty<Color>();
             }
         }
 
@@ -143,6 +146,27 @@ namespace SketchConverter
                 var style = Adapter.Document.ForeignTextStyles.Select(x => x.LocalSharedStyle).FirstOrDefault(x => x.DoObjectId == id) ??
                             Adapter.Document.LayerTextStyles.Objects.FirstOrDefault(x => x.DoObjectId == id);
                 return style?.Value.TextStyle;
+            }
+        }
+
+        /// <inheritdoc/>
+        public string SharedStyleId
+        {
+            get
+            {
+                var shouldAvoidOverride = string.IsNullOrEmpty(Layer.SharedStyleId);
+                if (!shouldAvoidOverride)
+                {
+                    if (GetOverrideValue(ParsedOverrideValue.PropertyKeywordLayerStyle) is { } overrideValue1)
+                    {
+                        return overrideValue1.Value.String;
+                    }
+                    if (GetOverrideValue(ParsedOverrideValue.PropertyKeywordTextStyle) is { } overrideValue2)
+                    {
+                        return overrideValue2.Value.String;
+                    }
+                }
+                return Layer.SharedStyleId;
             }
         }
 

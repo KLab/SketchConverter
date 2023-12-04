@@ -63,10 +63,17 @@ SketchFontごとに個別で関連付け設定するかデフォルトフォン�
             {
                 wordWrap = true,
                 margin = new RectOffset(10, 10, 5, 5),
-                normal = {textColor = Color.red},
+                normal = { textColor = Color.red },
             };
 
-            public static readonly GUIStyle Padding = new GUIStyle {padding = new RectOffset(10, 10, 10, 10)};
+            public static readonly GUIStyle WarningLabelStyle = new GUIStyle
+            {
+                wordWrap = true,
+                margin = new RectOffset(10, 10, 5, 5),
+                normal = { textColor = Color.yellow },
+            };
+
+            public static readonly GUIStyle Padding = new GUIStyle { padding = new RectOffset(10, 10, 10, 10) };
         }
 
         protected bool foldoutFontSection = true;
@@ -114,16 +121,23 @@ SketchFontごとに個別で関連付け設定するかデフォルトフォン�
                     for (var i = 0; i < directories.Length; i++)
                     {
                         var directory = directories[i];
+                        var isDuplicateDirectory = directory != default && directories.Take(i).Contains(directory);
+                        using (new WarningColorScope(isDuplicateDirectory))
                         using (new GUILayout.HorizontalScope())
                         {
-                            var inputDirectory = EditorGUILayout.ObjectField($"{i + 1}", directory, typeof(DefaultAsset), false) as DefaultAsset;
+                            GUILayout.Label($"{i + 1}", GUILayout.Width(directories.Length.ToString().Length * 10));
+                            if (isDuplicateDirectory)
+                            {
+                                GUILayout.Label("重複", Styles.WarningLabelStyle, GUILayout.ExpandWidth(false));
+                            }
+                            var inputDirectory = EditorGUILayout.ObjectField(directory, typeof(DefaultAsset), false) as DefaultAsset;
                             if (directory != inputDirectory && SketchConverterSettings.ToDirectoryPath(inputDirectory) != null)
                             {
                                 SketchConverterSettings.TextureDirectories[i] = inputDirectory;
                             }
                             if (GUILayout.Button("削除", GUILayout.Width(40)))
                             {
-                                SketchConverterSettings.TextureDirectories.Remove(directory);
+                                SketchConverterSettings.TextureDirectories.RemoveAt(i);
                             }
                         }
                     }
@@ -326,28 +340,44 @@ SketchFontごとに個別で関連付け設定するかデフォルトフォン�
             }
         }
 
-        /// <summary>項目に問題がある場合に表示を赤くするスコープ</summary>
-        protected class ErrorColorScope : GUI.Scope
+        /// <summary>背景色を変更するスコープ</summary>
+        protected class ColorScope : GUI.Scope
         {
-            Color backgroundColor;
-            bool error;
+            readonly Color backgroundColor;
+            readonly bool enabled;
 
-            public ErrorColorScope(bool isError)
+            protected ColorScope(bool enabled, Color color)
             {
-                error = isError;
-                if (error)
+                this.enabled = enabled;
+                if (enabled)
                 {
                     backgroundColor = GUI.backgroundColor;
-                    GUI.backgroundColor = Color.red;
+                    GUI.backgroundColor = color;
                 }
             }
 
             protected override void CloseScope()
             {
-                if (error)
+                if (enabled)
                 {
                     GUI.backgroundColor = backgroundColor;
                 }
+            }
+        }
+
+        /// <summary>項目に問題がある場合に表示を赤くするスコープ</summary>
+        protected class ErrorColorScope : ColorScope
+        {
+            public ErrorColorScope(bool isError) : base(isError, Color.red)
+            {
+            }
+        }
+
+        /// <summary>項目に問題がある場合に表示を黄色くするスコープ</summary>
+        protected class WarningColorScope : ColorScope
+        {
+            public WarningColorScope(bool isWarning) : base(isWarning, Color.yellow)
+            {
             }
         }
     }

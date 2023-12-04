@@ -17,6 +17,7 @@
 
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace SketchConverter
 {
@@ -34,7 +35,7 @@ namespace SketchConverter
         /// <inheritdoc/>
         public override void Decorate(IDecoratorEntry entry)
         {
-            if (!entry.Adapter.Layer.IsVisible)
+            if (!entry.Adapter.Layer.IsVisible && entry.Adapter.Layer.HasClippingMask != true)
             {
                 Object.DestroyImmediate(entry.GameObject);
             }
@@ -43,10 +44,18 @@ namespace SketchConverter
         /// <inheritdoc/>
         public override void DecorateReverseAfter(IDecoratorEntry entry)
         {
-            if (entry.GameObject.GetComponentsInChildren<Component>().All(x => x == x.transform))
+            if (entry.GameObject.GetComponentsInChildren<Component>().All(x => !(x is Graphic)))
             {
                 Object.DestroyImmediate(entry.GameObject);
             }
+            else if (IsInvisibleMaskLayerHasEmpty(entry))
+            {
+                Object.DestroyImmediate(entry.GameObject);
+            }
+
+            bool IsInvisibleMaskLayerHasEmpty(IDecoratorEntry entry) => !entry.Adapter.Layer.IsVisible &&
+                                                                        entry.Adapter.Layer.HasClippingMask == true &&
+                                                                        entry.GameObject.transform.childCount == 0;
         }
     }
 }

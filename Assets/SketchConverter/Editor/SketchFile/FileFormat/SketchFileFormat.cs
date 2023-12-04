@@ -188,7 +188,7 @@ namespace SketchConverter.FileFormat
     public partial struct Value
     {
         public Color Color;
-        public static implicit operator Value(Color Color) => new Value {Color = Color};
+        public static implicit operator Value(Color Color) => new Value { Color = Color };
     }
 
     public partial class OriginalMasterLayer

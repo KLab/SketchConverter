@@ -30,10 +30,13 @@ public static class PrefabValidator
 
     public static void Validate(ValidateData validateData, ValidateTarget parameter)
     {
-        Converter.SetupDecorators = parameter.SetupDecorators;
+        Converter.SetupGenerator = parameter.SetupGenerator ?? Converter.DefaultSetupGenerator;
+        Converter.SetupDecorators = parameter.SetupDecorators ?? Converter.DefaultSetupDecorator;
         var correctPrefabPaths = parameter.LayerNames;
         var sketchFile = Loader.LoadSketchFile(validateData.SketchFilePath);
         var layers = GetLayers(sketchFile);
+
+        parameter.Setup?.Invoke();
         foreach (var layer in layers)
         {
             try
@@ -58,7 +61,9 @@ public static class PrefabValidator
                 }
             }
         }
+        Converter.SetupGenerator = Converter.DefaultSetupGenerator;
         Converter.SetupDecorators = Converter.DefaultSetupDecorator;
+        parameter.TearDown?.Invoke();
     }
 
     public static ValidateData GetValidateData(string name) => AssetDatabase.FindAssets($"t:{nameof(ValidateData)}")
@@ -99,9 +104,11 @@ public static class PrefabValidator
 
             foreach (var data in dataList)
             {
+                data.Setup?.Invoke();
                 foreach (var layer in layers.Where(layer => data.LayerNames.Contains(layer.Name)))
                 {
-                    Converter.SetupDecorators = data.SetupDecorators;
+                    Converter.SetupDecorators = data.SetupDecorators ?? Converter.DefaultSetupDecorator;
+                    Converter.SetupGenerator = data.SetupGenerator ?? Converter.DefaultSetupGenerator;
                     Converter.GeneratePrefab(sketchFile, layer, TestPrefabPath);
                     var testPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(TestPrefabPath);
                     testPrefab.name = layer.Name;
@@ -122,11 +129,13 @@ public static class PrefabValidator
                         Converter.GeneratePrefab(sketchFile, layer, prefabPath);
                     }
                 }
+                data.TearDown?.Invoke();
             }
         }
         finally
         {
             Converter.SetupDecorators = Converter.DefaultSetupDecorator;
+            Converter.SetupGenerator = Converter.DefaultSetupGenerator;
             if (File.Exists(TestPrefabPath))
             {
                 AssetDatabase.DeleteAsset(TestPrefabPath);

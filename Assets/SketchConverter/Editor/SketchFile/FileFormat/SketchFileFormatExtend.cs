@@ -279,8 +279,7 @@ namespace SketchConverter.FileFormat
         /// <summary>
         /// Sketch の Color を UnityEngine の Color に変換
         /// </summary>
-        public static UnityEngine.Color ToUnityColor(this Color color) =>
-            new UnityEngine.Color((float) color.Red, (float) color.Green, (float) color.Blue, (float) color.Alpha);
+        public static UnityEngine.Color ToUnityColor(this Color color) => new UnityEngine.Color((float) color.Red, (float) color.Green, (float) color.Blue, (float) color.Alpha);
 
         /// <summary>
         /// Resizing 情報となるビットフラグを返す

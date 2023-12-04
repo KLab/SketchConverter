@@ -17,6 +17,7 @@
 
 using System;
 using SketchConverter.FileFormat;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -28,8 +29,7 @@ namespace SketchConverter
     public class UguiTextDecorator : Decorator
     {
         /// <inheritdoc/>
-        public override bool ShouldDecorate(IDecoratorEntry entry) =>
-            entry.Adapter.Layer.IsClass(ClassText.Text) && entry.GameObject.GetComponent<Graphic>() == null;
+        public override bool ShouldDecorate(IDecoratorEntry entry) => entry.Adapter.Layer.IsClass(ClassText.Text) && entry.GameObject.GetComponent<Graphic>() == null;
 
         /// <inheritdoc/>
         public override bool ShouldBreakingDescendants(IDecoratorEntry entry) => ShouldDecorate(entry);
@@ -37,7 +37,7 @@ namespace SketchConverter
         /// <inheritdoc/>
         public override void Decorate(IDecoratorEntry entry)
         {
-            var text = entry.GameObject.AddComponent<Text>();
+            var text = ObjectFactory.AddComponent<Text>(entry.GameObject);
             text.text = entry.Adapter.LayerAttributedStringString;
 
             var textStyle = entry.Adapter.LayerStyleTextStyle;

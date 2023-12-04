@@ -15,6 +15,7 @@
  * with other software products is expressly forbidden.
  */
 
+using UnityEditor;
 using UnityEngine.UI;
 
 namespace SketchConverter.Examples
@@ -25,6 +26,6 @@ namespace SketchConverter.Examples
     public class ButtonDecorator : Decorator
     {
         public override bool ShouldDecorate(IDecoratorEntry entry) => entry.Adapter.SymbolLayer?.Name.StartsWith("components/button/") ?? false;
-        public override void Decorate(IDecoratorEntry entry) => entry.GameObject.AddComponent<Button>();
+        public override void Decorate(IDecoratorEntry entry) => ObjectFactory.AddComponent<Button>(entry.GameObject);
     }
 }

@@ -25,5 +25,8 @@ public class ValidateTarget
 {
     public string Name;
     public string[] LayerNames;
+    public Func<SketchFile, IGenerator> SetupGenerator;
     public Action<IGenerator> SetupDecorators;
+    public Action Setup;
+    public Action TearDown;
 }
